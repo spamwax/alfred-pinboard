@@ -9,7 +9,7 @@ import (
 
 func TestArgs(t *testing.T) {
     ga := Alfred.NewAlfred("go-pinboard")
-    args := []string{"x"}
+    args := []string{"p"}
     err := generateTagSuggestions(args, ga)
     if err != nil {
         ga.MakeError(err)
@@ -19,4 +19,15 @@ func TestArgs(t *testing.T) {
     // ga.WriteToAlfred()
     res, _ := ga.XML()
     fmt.Println(string(res))
+}
+
+func TestUpdateCache(t *testing.T) {
+    ga := Alfred.NewAlfred("go-pinboard")
+    v, _ := update_tags_cache(ga)
+    for _, p := range v.Pins {
+        fmt.Printf("url: %v\nhash: %v\nshared: %v\ntags: %v\n", p.Url, p.Hash, p.Shared, p.Tags)
+        fmt.Printf("ext: %v\ntime: %v\nmeta:%v\n", p.Notes, p.Time, p.Meta)
+        fmt.Println()
+        //fmt.Println(strings.Fields(p.Tags))
+    }
 }
