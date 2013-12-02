@@ -22,8 +22,12 @@ var (
 func main() {
     ga := Alfred.NewAlfred("go-pinboard")
     res, _ := ga.XML()
-    // fmt.Println(string(res), os.Args)
+    fmt.Println(string(res), os.Args)
     args := os.Args[1:]
+
+    if len(args) == 0 {
+        return
+    }
 
     showTags := true
     for _, arg := range args {
@@ -65,9 +69,15 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
     if err != nil {
         return err
     }
+
+    ic := 0
     for tag, freq := range tags {
         ga.AddItem("", tag, strconv.Itoa(freq), "no", "yes", "", "",
             Alfred.NewIcon("tag_icon.png", ""), true)
+        ic++
+        if ic > MaxNoResults {
+            break
+        }
     }
     return nil
 }
@@ -75,7 +85,6 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
 func getTagsFor(q string, inFile io.Reader) (m map[string]int, err error) {
     m = make(map[string]int)
     scanner := bufio.NewScanner(inFile)
-    ic := 0
     eof := false
     for !eof {
         valid := scanner.Scan()
@@ -92,10 +101,9 @@ func getTagsFor(q string, inFile io.Reader) (m map[string]int, err error) {
             if strings.Contains(fields[0], q) {
                 foo, _ := strconv.ParseInt(fields[1], 10, 32)
                 m[fields[0]] = int(foo)
-                ic++
             }
         }
-        if ic > MaxNoResults || err == io.EOF || err == io.ErrNoProgress {
+        if err == io.EOF || err == io.ErrNoProgress {
             err = nil
             eof = true
         } else if err != nil {
