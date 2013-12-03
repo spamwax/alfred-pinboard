@@ -3,6 +3,8 @@ package main
 import (
     "bitbucket.org/listboss/go-alfred"
     "bufio"
+    "bytes"
+    "encoding/gob"
     "encoding/xml"
     "fmt"
     "os"
@@ -68,8 +70,16 @@ func update_tags_cache(ga *Alfred.GoAlfred) (posts *Posts, err error) {
     if err != nil {
         return nil, err
     }
-    for tag, count := range tags_map {
-        file.WriteString(fmt.Sprintf("%s %d\n", tag, count))
+    var b bytes.Buffer
+    enc := gob.NewEncoder(b)
+    err = enc.Encode(tags_map)
+    if err != nil {
+        return nil, err
     }
+    file.Write(b)
+
+    // for tag, count := range tags_map {
+    //     file.WriteString(fmt.Sprintf("%s %d\n", tag, count))
+    // }
     return posts, nil
 }

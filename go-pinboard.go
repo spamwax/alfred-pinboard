@@ -72,6 +72,7 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
 
     ic := 0
     for tag, freq := range tags {
+        // TODO: generate UUID for the tags so Alfred can learn about them.
         ga.AddItem("", tag, strconv.Itoa(freq), "no", "yes", "", "",
             Alfred.NewIcon("tag_icon.png", ""), true)
         ic++
