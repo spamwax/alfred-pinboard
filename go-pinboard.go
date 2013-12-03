@@ -2,9 +2,7 @@ package main
 
 import (
     "bitbucket.org/listboss/go-alfred"
-    "bufio"
-    "fmt"
-    "io"
+    // "fmt"
     // "io/ioutil"
     "os"
     "path"
@@ -22,9 +20,11 @@ var (
 func main() {
     ga := Alfred.NewAlfred("go-pinboard")
     res, _ := ga.XML()
-    fmt.Println(string(res), os.Args)
+    _ = res // remove this after debugging
+    // fmt.Println(string(res), os.Args)
     args := os.Args[1:]
 
+    // args = []string{"p"}
     if len(args) == 0 {
         return
     }
@@ -57,24 +57,28 @@ func main() {
 }
 
 func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
-    tags_cache := path.Join(ga.CacheDir,
+    tags_cache_fn := path.Join(ga.CacheDir,
         strings.Join([]string{TagsCacheFN, AccountName}, "_"))
-    fileReader, err := os.Open(tags_cache)
-    defer fileReader.Close()
-    if err != nil {
-        return err
-    }
-
-    tags, err := getTagsFor(args[len(args)-1], fileReader)
+    noTagQ := len(args)
+    last_arg := args[noTagQ-1]
+    // TODO: Add setting so that user can toggle showing lower/upper case tags
+    strings.ToLower(last_arg)
+    tags, err := getTagsFor(last_arg, tags_cache_fn)
     if err != nil {
         return err
     }
 
     ic := 0
     for tag, freq := range tags {
+        auto_complete := tag
+        // Add the current selected tags to the auto_complete
+        if noTagQ >= 2 {
+            auto_complete = strings.Join(args[:noTagQ-1], " ")
+            auto_complete += " " + tag
+        }
         // TODO: generate UUID for the tags so Alfred can learn about them.
-        ga.AddItem("", tag, strconv.Itoa(freq), "no", "yes", "", "",
-            Alfred.NewIcon("tag_icon.png", ""), true)
+        ga.AddItem("", tag, strconv.Itoa(int(freq)), "no", auto_complete, "",
+            "", Alfred.NewIcon("tag_icon.icns", ""), true)
         ic++
         if ic > MaxNoResults {
             break
@@ -83,35 +87,22 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
     return nil
 }
 
-func getTagsFor(q string, inFile io.Reader) (m map[string]int, err error) {
-    m = make(map[string]int)
-    scanner := bufio.NewScanner(inFile)
-    eof := false
-    for !eof {
-        valid := scanner.Scan()
-        if !valid {
-            break
+func getTagsFor(q string, tags_cache_fn string) (m map[string]uint, err error) {
+    tags_map, err := load_tags_cache(tags_cache_fn)
+    if err != nil {
+        return nil, err
+    }
+
+    m = make(map[string]uint)
+    for tag, count := range tags_map {
+        if count == 0 {
+            continue
         }
-        err = scanner.Err()
-        line := scanner.Text()
-        fields := strings.Fields(line)
-        if len(fields) == 1 {
-            fields = append(fields, "1")
-        }
-        if len(fields) == 2 {
-            if strings.Contains(fields[0], q) {
-                foo, _ := strconv.ParseInt(fields[1], 10, 32)
-                m[fields[0]] = int(foo)
-            }
-        }
-        if err == io.EOF || err == io.ErrNoProgress {
-            err = nil
-            eof = true
-        } else if err != nil {
-            return nil, err
+        if strings.Contains(tag, q) {
+            m[tag] = count
         }
     }
-    return
+    return m, nil
 }
 
 func postToCloud(args []string, ga *Alfred.GoAlfred) (err error) {
