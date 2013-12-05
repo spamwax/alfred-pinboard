@@ -4,6 +4,7 @@ import (
     "bitbucket.org/listboss/go-alfred"
     "encoding/xml"
     "errors"
+    "github.com/codegangsta/cli"
     // "fmt"
     "io/ioutil"
     "log"
@@ -43,6 +44,51 @@ func main() {
     ga.Set("replace", "yes")
     ga.Set("oauth", "username:token")
     ga.Set("browser", "chrome")
+
+    app := cli.NewApp()
+    app.Name = "alfred_pinboard"
+    app.Usage = "Alfred Workflow helper to manage Pinboard pins using Alfred."
+    app.Action = func(ctx *cli.Context) {
+        os.Stdout.Write([]byte(app.Usage))
+    }
+    updateBookmarksCache := cli.Command{
+        Name:  "update",
+        Usage: "Fetches all the bookmarks and updates the tags cache.",
+        Action: func(c *cli.Context) {
+            update_tags_cache(ga)
+        },
+    }
+    setOptions := cli.Command{
+        Name:  "setopions",
+        Usage: "Sets token and browser otions",
+        Flags: []cli.Flag{
+            cli.StringFlag{"browser", "safari", "Browser to fetch the webpage from"},
+            cli.StringFlag{"auth", "", "Set authorization token in form of username:token"},
+        },
+        Action: func(c *cli.Context) {
+            if b := c.String("browser"); b != "" {
+                ga.Set("browser", b)
+            }
+            if t := c.String("auth"); t != "" {
+                ga.Set("oauth", t)
+            }
+        },
+    }
+    postBookmark := cli.Command{
+        Name: "post",
+        Action: func(c *cli.Context) {
+            query := strings.Join(c.Args(), " ")
+            err := postToCloud(query, ga)
+            if err != nil {
+                os.Stdout.WriteString(err.Error())
+            }
+        },
+    }
+    showTagsCommand := cli.Command{
+        Name: "showtags",
+    }
+    app.Commands = []cli.Command{updateBookmarksCache, setOptions,
+        postBookmark, showTagsCommand}
 
     _fn := ga.DataDir
     logfile, _ := os.OpenFile(_fn+"/log.txt", os.O_APPEND|os.O_WRONLY, 0666)
