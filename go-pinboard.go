@@ -90,7 +90,7 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
     noTagQ := len(args)
     last_arg := args[noTagQ-1]
     // TODO: Add setting so that user can toggle showing lower/upper case tags
-    strings.ToLower(last_arg)
+    last_arg = strings.ToLower(last_arg)
     tags, err := getTagsFor(last_arg, tags_cache_fn)
     if err != nil {
         return err
@@ -128,7 +128,7 @@ func getTagsFor(q string, tags_cache_fn string) (m map[string]uint, err error) {
         if count == 0 {
             continue
         }
-        if strings.Contains(tag, q) {
+        if strings.Contains(strings.ToLower(tag), q) {
             m[tag] = count
         }
     }
