@@ -2,16 +2,19 @@ package main
 
 import (
     "bitbucket.org/listboss/go-alfred"
+    "encoding/xml"
+    "errors"
+    // "fmt"
+    "io/ioutil"
+    "log"
     "net/http"
     "net/url"
-    // "fmt"
-    // "io/ioutil"
-    "errors"
     "os"
     "os/exec"
     "path"
     "strconv"
     "strings"
+    "time"
     // "regexp"
 )
 
@@ -30,23 +33,27 @@ type pinboardPayload struct {
     tags        string
     replace     string
     shared      string
-}
-
-type pinboardResponse struct {
-    Result string
+    auth_token  string
 }
 
 func main() {
     ga := Alfred.NewAlfred("go-pinboard")
-    res, _ := ga.XML()
-    _ = res // remove this after debugging
-    // fmt.Println(string(res), os.Args)
+    ga.Set("shared", "no")
+    ga.Set("replace", "yes")
+    ga.Set("oauth", "username:token")
+    ga.Set("browser", "chrome")
+
+    _fn := ga.DataDir
+    logfile, _ := os.OpenFile(_fn+"/log.txt", os.O_APPEND|os.O_WRONLY, 0666)
+    var L = log.New(logfile, time.Now().String()+": ", 0)
+    // fmt.Println(len(os.Args))
     args := os.Args[1:]
 
-    // args = []string{"p"}
+    // args := []string{"hami:d", "#", "testing"}
     if len(args) == 0 {
         return
     }
+    L.Println(args)
 
     showTags := true
     for _, arg := range args {
@@ -65,13 +72,13 @@ func main() {
             os.Exit(1)
         }
         ga.WriteToAlfred()
+        b, _ := ga.XML()
+        L.Println(string(b))
     } else {
-        err := getBrowserInfo(ga)
-        err = postToCloud(args, ga)
+        query := strings.Join(args, " ")
+        err := postToCloud(query, ga)
         if err != nil {
-            ga.MakeError(err)
-            ga.WriteToAlfred()
-            os.Exit(1)
+            os.Stdout.WriteString(err.Error())
         }
     }
 }
@@ -98,8 +105,9 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
             auto_complete += " " + tag
         }
         // TODO: generate UUID for the tags so Alfred can learn about them.
-        ga.AddItem("", tag, strconv.Itoa(int(freq)), "no", auto_complete, "",
-            "", Alfred.NewIcon("tag_icon.icns", ""), true)
+        ga.AddItem("", tag, strconv.Itoa(int(freq)), "yes", auto_complete, "",
+            "{query}", Alfred.NewIcon("tag_icon.icns", ""), false)
+        // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
         ic++
         if ic > MaxNoResults {
             break
@@ -127,7 +135,7 @@ func getTagsFor(q string, tags_cache_fn string) (m map[string]uint, err error) {
     return m, nil
 }
 
-func postToCloud(args []string, ga *Alfred.GoAlfred) (err error) {
+func postToCloud(args string, ga *Alfred.GoAlfred) (err error) {
     pinInfo, err := getBrowserInfo(ga)
     if err != nil {
         return err
@@ -144,28 +152,59 @@ func postToCloud(args []string, ga *Alfred.GoAlfred) (err error) {
     payload.url = pinInfo[0]
     payload.description = pinInfo[1]
     payload.replace = "yes"
-    payload.shared = ga.Get("shared") // TODO: set this setting in init()
-    urlReq := encodeURL(payload)
+
+    if payload.shared, err = ga.Get("shared"); err != nil {
+        payload.shared = "no"
+    }
+    payload.auth_token = oauth
+
+    urlReq := encodeURL(payload, "/v1/posts/add")
+    // fmt.Println(urlReq.String())
     err = postToPinboard(urlReq)
     return err
 }
 
-func postToPinBoard(req url.URL) (err error) {
+func postToPinboard(req url.URL) (err error) {
+    // fmt.Printf("req: %v\n", req.String())
     res, err := http.Get(req.String())
+    // fmt.Printf("res: %v\n", res.StatusCode)
     if err != nil {
         return err
+    }
+    if res.StatusCode != 200 {
+        return errors.New(res.Status)
     }
     status, err := ioutil.ReadAll(res.Body)
     res.Body.Close()
     if err != nil {
         return err
     }
+    var pinRes pinboardResponse
+    if err = xml.Unmarshal(status, &pinRes); err != nil {
+        return err
+    }
+    if pinRes.Result.Code != "done" {
+        return errors.New(pinRes.Result.Code)
+    }
+    return nil
 
 }
+
+func parseTags(args string) (tags, desc string) {
+    foo_ := strings.Split(args, "#")
+    tags = strings.Trim(foo_[0], " ")
+    desc = ""
+    if len(foo_) > 1 {
+        desc = strings.Trim(foo_[1], " ")
+    }
+    // fmt.Printf("tags: %v\ndesc: %v\n", tags, desc)
+    return tags, desc
+}
+
 func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
-    browser, err = ga.Get("browser")
+    browser, err := ga.Get("browser")
     if err != nil {
-        return err
+        return nil, err
     }
     if len(browser) == 0 {
         browser = "safarai"
@@ -174,15 +213,19 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     b, err := exec.Command("osascript", "-s", "s", "-s", "o", "-e",
         appleScript).Output()
     if err != nil {
-        return err
+        return nil, err
     }
     out := string(b)
-    foo_ := strings.Split(strings.Trim(out, "{} "), ",")
-    pinURL := strings.Trim(foo_[0], "\" ")
+    // fmt.Println(out)
+    foo0 := strings.Trim(out, "{}\n")
+    foo1 := strings.Split(foo0, ",")
+    // fmt.Printf("foo0: '%v'\np1: '%v'\np2: '%v'\n", foo0, foo1[0], foo1[1])
+    pinURL := strings.Trim(foo1[0], "\" ")
     pinDesc := ""
-    if len(foo_) > 1 {
-        pinDesc = strings.Trim(foo_[1], "\"")
+    if len(foo1) > 1 {
+        pinDesc = strings.Trim(foo1[1], "\" ")
     }
+    // fmt.Printf("%v\n%v\n", pinURL, pinDesc)
     return []string{pinURL, pinDesc}, err
 }
 
@@ -197,6 +240,7 @@ func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {
     q.Set("replace", payload.replace)
     q.Set("shared", payload.shared)
     q.Set("tags", payload.tags)
+    q.Set("auth_token", payload.auth_token)
     u.RawQuery = q.Encode()
     return u
 }

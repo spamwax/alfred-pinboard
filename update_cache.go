@@ -20,6 +20,20 @@ var data = `<?xml version="1.0" encoding="UTF-8" ?>
 <post href="http://durak.org/cvswebsites/howto-cvs/node37.html" time="2006-03-03T20:55:18Z" description="CVS Server Setup" extended="CVS Server Setup" tag="Learn screen Linux CVS" hash="f99a793264f1a3ef8e8ecdc7d1f7c154" meta="7da1d359a76955fcbd2cbce622483f63"  shared="no"  />
 </posts>`
 
+type pinboardResponse struct {
+    Result     pResult `xml:"result"`
+    Posts      Posts   `xml:"posts"`
+    UpdateTime pUpdate `xml:"update"`
+}
+
+type pResult struct {
+    Code string `xml:"code,attr"`
+}
+
+type pUpdate struct {
+    Update time.Time `xml:"time,attr"`
+}
+
 type Posts struct {
     XMLName xml.Name `xml:"posts"`
     Pins    []Link   `xml:"post"`
