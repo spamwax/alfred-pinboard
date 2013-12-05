@@ -2,7 +2,8 @@ package main
 
 import (
     "bitbucket.org/listboss/go-alfred"
-    // "net/url"
+    "net/http"
+    "net/url"
     // "fmt"
     // "io/ioutil"
     "errors"
@@ -15,9 +16,11 @@ import (
 )
 
 var (
-    AccountName  string = "hamid"
-    TagsCacheFN  string = "tags_cache"
-    MaxNoResults int    = 10
+    AccountName     string = "hamid"
+    TagsCacheFN     string = "tags_cache"
+    MaxNoResults    int    = 10
+    hostURLPinboard string = "api.pinboard.in"
+    hostURLScheme   string = "https"
 )
 
 type pinboardPayload struct {
@@ -27,6 +30,10 @@ type pinboardPayload struct {
     tags        string
     replace     string
     shared      string
+}
+
+type pinboardResponse struct {
+    Result string
 }
 
 func main() {
@@ -69,6 +76,7 @@ func main() {
     }
 }
 
+// args: list of tags that user has input before entering 'note'
 func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
     tags_cache_fn := path.Join(ga.CacheDir,
         strings.Join([]string{TagsCacheFN, AccountName}, "_"))
@@ -101,6 +109,7 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
 }
 
 func getTagsFor(q string, tags_cache_fn string) (m map[string]uint, err error) {
+    // TODO: Use Pinboard's api to get list of popular tags and add to this
     tags_map, err := load_tags_cache(tags_cache_fn)
     if err != nil {
         return nil, err
@@ -136,11 +145,23 @@ func postToCloud(args []string, ga *Alfred.GoAlfred) (err error) {
     payload.description = pinInfo[1]
     payload.replace = "yes"
     payload.shared = ga.Get("shared") // TODO: set this setting in init()
-    urlReq, err := encodeURL(payload)
+    urlReq := encodeURL(payload)
     err = postToPinboard(urlReq)
     return err
 }
 
+func postToPinBoard(req url.URL) (err error) {
+    res, err := http.Get(req.String())
+    if err != nil {
+        return err
+    }
+    status, err := ioutil.ReadAll(res.Body)
+    res.Body.Close()
+    if err != nil {
+        return err
+    }
+
+}
 func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     browser, err = ga.Get("browser")
     if err != nil {
@@ -163,6 +184,21 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
         pinDesc = strings.Trim(foo_[1], "\"")
     }
     return []string{pinURL, pinDesc}, err
+}
+
+func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {
+    u := url.URL{}
+    u.Scheme = hostURLScheme
+    u.Host = path.Join(hostURLPinboard, pathURL)
+    q := u.Query()
+    q.Set("url", payload.url)
+    q.Set("description", payload.description)
+    q.Set("extended", payload.extended)
+    q.Set("replace", payload.replace)
+    q.Set("shared", payload.shared)
+    q.Set("tags", payload.tags)
+    u.RawQuery = q.Encode()
+    return u
 }
 
 var appleScriptDetectBrowser = map[string]string{
