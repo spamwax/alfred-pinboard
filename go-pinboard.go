@@ -2,9 +2,12 @@ package main
 
 import (
     "bitbucket.org/listboss/go-alfred"
+    // "net/url"
     // "fmt"
     // "io/ioutil"
+    "errors"
     "os"
+    "os/exec"
     "path"
     "strconv"
     "strings"
@@ -16,6 +19,15 @@ var (
     TagsCacheFN  string = "tags_cache"
     MaxNoResults int    = 10
 )
+
+type pinboardPayload struct {
+    url         string
+    description string
+    extended    string
+    tags        string
+    replace     string
+    shared      string
+}
 
 func main() {
     ga := Alfred.NewAlfred("go-pinboard")
@@ -47,7 +59,8 @@ func main() {
         }
         ga.WriteToAlfred()
     } else {
-        err := postToCloud(args, ga)
+        err := getBrowserInfo(ga)
+        err = postToCloud(args, ga)
         if err != nil {
             ga.MakeError(err)
             ga.WriteToAlfred()
@@ -106,5 +119,65 @@ func getTagsFor(q string, tags_cache_fn string) (m map[string]uint, err error) {
 }
 
 func postToCloud(args []string, ga *Alfred.GoAlfred) (err error) {
-    return nil
+    pinInfo, err := getBrowserInfo(ga)
+    if err != nil {
+        return err
+    }
+    oauth, err := ga.Get("oauth")
+    if err != nil {
+        return err
+    }
+    if oauth == "" {
+        return errors.New("Set your authorization token first!")
+    }
+    var payload pinboardPayload
+    payload.tags, payload.extended = parseTags(args)
+    payload.url = pinInfo[0]
+    payload.description = pinInfo[1]
+    payload.replace = "yes"
+    payload.shared = ga.Get("shared") // TODO: set this setting in init()
+    urlReq, err := encodeURL(payload)
+    err = postToPinboard(urlReq)
+    return err
+}
+
+func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
+    browser, err = ga.Get("browser")
+    if err != nil {
+        return err
+    }
+    if len(browser) == 0 {
+        browser = "safarai"
+    }
+    appleScript := appleScriptDetectBrowser[browser]
+    b, err := exec.Command("osascript", "-s", "s", "-s", "o", "-e",
+        appleScript).Output()
+    if err != nil {
+        return err
+    }
+    out := string(b)
+    foo_ := strings.Split(strings.Trim(out, "{} "), ",")
+    pinURL := strings.Trim(foo_[0], "\" ")
+    pinDesc := ""
+    if len(foo_) > 1 {
+        pinDesc = strings.Trim(foo_[1], "\"")
+    }
+    return []string{pinURL, pinDesc}, err
+}
+
+var appleScriptDetectBrowser = map[string]string{
+    "safari": `on run
+        tell application "Safari"
+            set theURL to URL of current tab of window 1
+            set theDesc to name of current tab of window 1
+        end tell
+        return {theUrl, theDesc}
+        end run`,
+    "chrome": `on run
+            tell application "Google Chrome"
+                set theURL to URL of active tab of first window
+                set theDesc to title of active tab of first window
+            end tell
+            return {theURL, theDesc}
+            end run`,
 }
