@@ -19,11 +19,12 @@ import (
 )
 
 var (
-    AccountName     string = "hamid"
-    TagsCacheFN     string = "tags_cache"
-    MaxNoResults    int    = 10
-    hostURLPinboard string = "api.pinboard.in"
-    hostURLScheme   string = "https"
+    AccountName      string = "hamid"
+    TagsCacheFN      string = "tags_cache"
+    MaxNoResults     int    = 10
+    hostURLPinboard  string = "api.pinboard.in"
+    hostURLScheme    string = "https"
+    commentCharacter string = ";"
 )
 
 type pinboardPayload struct {
@@ -49,18 +50,26 @@ func main() {
     // fmt.Println(len(os.Args))
     args := os.Args[1:]
 
-    // args := []string{"hami:d", "#", "testing"}
+    // args := []string{"hami:d", commentCharacter, "testing"}
     if len(args) == 0 {
+        // TODO: show the bookmark if it has already bin pinned
         return
     }
     L.Println(args)
 
+    // Show tags autocomplete?
+    query := strings.Join(args, " ")
     showTags := true
-    for _, arg := range args {
-        if len(arg) > 0 {
-            if arg[0] == '#' && (len(arg) == 1 || arg[1] != '#') {
-                showTags = false
-                break
+    if strings.Contains(query, commentCharacter) {
+        for _, arg := range args {
+            if len(arg) > 0 {
+                if strings.Contains(arg, commentCharacter) {
+                    if string(arg[0]) == commentCharacter &&
+                        (len(arg) == 1 || string(arg[1]) != commentCharacter) {
+                        showTags = false
+                        break
+                    }
+                }
             }
         }
     }
@@ -72,14 +81,16 @@ func main() {
             os.Exit(1)
         }
         ga.WriteToAlfred()
-        b, _ := ga.XML()
-        L.Println(string(b))
+        // b, _ := ga.XML()
+        // L.Println(string(b))
     } else {
-        query := strings.Join(args, " ")
-        err := postToCloud(query, ga)
-        if err != nil {
-            os.Stdout.WriteString(err.Error())
-        }
+        ga.AddItem("", "Hit Enter to save the bookmark.", "Pinboard", "yes",
+            "", "", "{query}", Alfred.NewIcon("bookmark.icns", ""), true)
+        ga.WriteToAlfred()
+        // err := postToCloud(query, ga)
+        // if err != nil {
+        //     os.Stdout.WriteString(err.Error())
+        // }
     }
 }
 
@@ -105,8 +116,8 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
             auto_complete += " " + tag
         }
         // TODO: generate UUID for the tags so Alfred can learn about them.
-        ga.AddItem("", tag, strconv.Itoa(int(freq)), "yes", auto_complete, "",
-            "{query}", Alfred.NewIcon("tag_icon.icns", ""), false)
+        ga.AddItem("", tag, strconv.Itoa(int(freq)), "no", auto_complete, "",
+            "{query}", Alfred.NewIcon("tag_icon.icns", ""), true)
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
         ic++
         if ic > MaxNoResults {
@@ -191,7 +202,7 @@ func postToPinboard(req url.URL) (err error) {
 }
 
 func parseTags(args string) (tags, desc string) {
-    foo_ := strings.Split(args, "#")
+    foo_ := strings.Split(args, commentCharacter)
     tags = strings.Trim(foo_[0], " ")
     desc = ""
     if len(foo_) > 1 {
