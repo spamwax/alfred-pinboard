@@ -47,9 +47,13 @@ func main() {
 
     app := cli.NewApp()
     app.Name = "alfred_pinboard"
-    app.Usage = "Alfred Workflow helper to manage Pinboard pins using Alfred."
+    app.Usage = "Alfred Workflow helper to manage Pinboard pins using Alfred"
     app.Action = func(ctx *cli.Context) {
-        os.Stdout.Write([]byte(app.Usage))
+        foo := `NAME:
+   alfred_pinboard - Alfred Workflow helper to manage Pinboard pins using Alfred.
+
+   enter "alfred_pinboard help" for more information`
+        os.Stdout.Write([]byte(foo))
     }
     updateBookmarksCache := cli.Command{
         Name:  "update",
