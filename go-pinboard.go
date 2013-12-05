@@ -42,7 +42,7 @@ func main() {
     ga := Alfred.NewAlfred("go-pinboard")
     ga.Set("shared", "no")
     ga.Set("replace", "yes")
-    ga.Set("oauth", "username:token")
+    // ga.Set("oauth", "username:token")
     ga.Set("browser", "chrome")
 
     app := cli.NewApp()
@@ -59,8 +59,8 @@ func main() {
         },
     }
     setOptions := cli.Command{
-        Name:  "setopions",
-        Usage: "Sets token and browser otions",
+        Name:  "setoptions",
+        Usage: "Sets token and browser options",
         Flags: []cli.Flag{
             cli.StringFlag{"browser", "safari", "Browser to fetch the webpage from"},
             cli.StringFlag{"auth", "", "Set authorization token in form of username:token"},
@@ -86,17 +86,21 @@ func main() {
     }
     showTagsCommand := cli.Command{
         Name: "showtags",
+        Action: func(c *cli.Context) {
+            args := []string(c.Args())
+            showtags(args, ga)
+        },
     }
     app.Commands = []cli.Command{updateBookmarksCache, setOptions,
         postBookmark, showTagsCommand}
+    app.Run(os.Args)
+}
 
+func showtags(args []string, ga *Alfred.GoAlfred) {
     _fn := ga.DataDir
     logfile, _ := os.OpenFile(_fn+"/log.txt", os.O_APPEND|os.O_WRONLY, 0666)
     var L = log.New(logfile, time.Now().String()+": ", 0)
-    // fmt.Println(len(os.Args))
-    args := os.Args[1:]
 
-    // args := []string{"hami:d", commentCharacter, "testing"}
     if len(args) == 0 {
         // TODO: show the bookmark if it has already bin pinned
         return
@@ -201,6 +205,7 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (err error) {
     if err != nil {
         return err
     }
+    // os.Stdout.Write([]byte(oauth))
     if oauth == "" {
         return errors.New("Set your authorization token first!")
     }
