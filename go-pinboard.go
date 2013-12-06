@@ -97,6 +97,12 @@ func main() {
                 ga.Set("oauth", t)
                 _username := strings.Split(t, ":")[0]
                 ga.Set("username", _username)
+                tags_cache_fn := path.Join(ga.CacheDir,
+                    strings.Join([]string{TagsCacheFN, _username}, "_"))
+                posts_cache_fn := path.Join(ga.CacheDir,
+                    strings.Join([]string{PostsCachFn, _username}, "_"))
+                ga.Set("tags_cache_fn", tags_cache_fn)
+                ga.Set("posts_cache_fn", posts_cache_fn)
             }
         },
     }
