@@ -5,7 +5,6 @@ import (
     "encoding/xml"
     "errors"
     "github.com/codegangsta/cli"
-    // "fmt"
     "io/ioutil"
     "log"
     "net/http"
@@ -16,7 +15,6 @@ import (
     "strconv"
     "strings"
     "time"
-    // "regexp"
 )
 
 var (
@@ -44,7 +42,6 @@ func Init() (ga *Alfred.GoAlfred) {
     ga = Alfred.NewAlfred("go-pinboard")
     ga.Set("shared", "no")
     ga.Set("replace", "yes")
-    // ga.Set("oauth", "username:token")
     ga.Set("browser", "chrome")
     AccountName, err = ga.Get("username")
     if err != nil {
@@ -115,8 +112,10 @@ func main() {
         Description: "Posts a bookmark to cloud for the current page of the browser.",
         Action: func(c *cli.Context) {
             query := strings.Join(c.Args(), " ")
-            err := postToCloud(query, ga)
-            if err != nil {
+            binfo, err := postToCloud(query, ga)
+            if err == nil {
+                os.Stdout.WriteString(binfo[1])
+            } else {
                 os.Stdout.WriteString(err.Error())
             }
         },
@@ -169,16 +168,11 @@ func showtags(args []string, ga *Alfred.GoAlfred) {
             os.Exit(1)
         }
         ga.WriteToAlfred()
-        // b, _ := ga.XML()
-        // L.Println(string(b))
     } else {
-        ga.AddItem("", "Hit Enter to save the bookmark.", "Pinboard", "yes",
-            "", "", "{query}", Alfred.NewIcon("bookmark.icns", ""), true)
+        // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
+        ga.AddItem("chichichi", "Hit Enter to save the bookmark.", query, "yes",
+            "", "", query, Alfred.NewIcon("bookmark.icns", ""), false)
         ga.WriteToAlfred()
-        // err := postToCloud(query, ga)
-        // if err != nil {
-        //     os.Stdout.WriteString(err.Error())
-        // }
     }
 }
 
@@ -205,7 +199,7 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
         }
         // TODO: generate UUID for the tags so Alfred can learn about them.
         ga.AddItem("", tag, strconv.Itoa(int(freq)), "no", auto_complete, "",
-            "{query}", Alfred.NewIcon("tag_icon.icns", ""), true)
+            "", Alfred.NewIcon("tag_icon.icns", ""), true)
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
         ic++
         if ic > MaxNoResults {
@@ -234,17 +228,17 @@ func getTagsFor(q string, tags_cache_fn string) (m map[string]uint, err error) {
     return m, nil
 }
 
-func postToCloud(args string, ga *Alfred.GoAlfred) (err error) {
+func postToCloud(args string, ga *Alfred.GoAlfred) (info []string, err error) {
     pinInfo, err := getBrowserInfo(ga)
     if err != nil {
-        return err
+        return pinInfo, err
     }
     oauth, err := ga.Get("oauth")
     if err != nil {
-        return err
+        return pinInfo, err
     }
     if oauth == "" {
-        return errors.New("Set your authorization token first!")
+        return pinInfo, errors.New("Set your authorization token first!")
     }
     var payload pinboardPayload
     payload.tags, payload.extended = parseTags(args)
@@ -258,9 +252,9 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (err error) {
     payload.auth_token = oauth
 
     urlReq := encodeURL(payload, "/v1/posts/add")
-    // fmt.Println(urlReq.String())
     err = postToPinboard(urlReq)
-    return err
+
+    return pinInfo, err
 }
 
 func postToPinboard(req url.URL) (err error) {
@@ -277,11 +271,9 @@ func postToPinboard(req url.URL) (err error) {
         return err
     }
     var pinRes pinboardResultResponse
-    os.Stdout.WriteString(string(status))
     if err = xml.Unmarshal(status, &pinRes); err != nil {
         return err
     }
-    // os.Stdout.WriteString("hamid: " + pinRes.Code)
     if pinRes.Code != "done" {
         return errors.New(pinRes.Code)
     }
@@ -296,7 +288,6 @@ func parseTags(args string) (tags, desc string) {
     if len(foo_) > 1 {
         desc = strings.Trim(foo_[1], " ")
     }
-    // fmt.Printf("tags: %v\ndesc: %v\n", tags, desc)
     return tags, desc
 }
 
@@ -315,16 +306,13 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
         return nil, err
     }
     out := string(b)
-    // fmt.Println(out)
     foo0 := strings.Trim(out, "{}\n")
     foo1 := strings.Split(foo0, ",")
-    // fmt.Printf("foo0: '%v'\np1: '%v'\np2: '%v'\n", foo0, foo1[0], foo1[1])
     pinURL := strings.Trim(foo1[0], "\" ")
     pinDesc := ""
     if len(foo1) > 1 {
         pinDesc = strings.Trim(foo1[1], "\" ")
     }
-    // fmt.Printf("%v\n%v\n", pinURL, pinDesc)
     return []string{pinURL, pinDesc}, err
 }
 
