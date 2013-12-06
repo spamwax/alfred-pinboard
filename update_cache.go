@@ -46,13 +46,7 @@ type Link struct {
 
 type Tags map[string]uint
 
-var (
-    hamid string
-)
-
 func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
-    posts := new(Posts)
-
     needed, err := updateNeeded(ga)
     if err != nil {
         return err
@@ -65,14 +59,14 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
     if err = updatePostsCache(ga); err != nil {
         return err
     }
+
+    posts := new(Posts)
     if posts, err = readPostsCache(ga); err != nil {
         return err
     }
 
     tags_map := make(Tags)
-
     for _, pin := range posts.Pins {
-        // fmt.Println(pin)
         tags := strings.Fields(pin.Tags)
         if len(tags) != 0 {
             for _, tag := range tags {
@@ -183,7 +177,6 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
     if err != nil {
         return false, err
     }
-    fmt.Println("last_time", lastTime, "update", pinRes.Datetime)
     if pinRes.Datetime.After(lastTime) {
         return true, nil
     } else {
