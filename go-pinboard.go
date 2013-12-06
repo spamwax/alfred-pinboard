@@ -22,6 +22,7 @@ import (
 var (
     AccountName      string = "hamid"
     TagsCacheFN      string = "tags_cache"
+    PostsCachFn      string = "posts_cache"
     MaxNoResults     int    = 10
     hostURLPinboard  string = "api.pinboard.in"
     hostURLScheme    string = "https"
@@ -38,13 +39,31 @@ type pinboardPayload struct {
     auth_token  string
 }
 
-func main() {
-    ga := Alfred.NewAlfred("go-pinboard")
+func Init() (ga *Alfred.GoAlfred) {
+    var err error
+    ga = Alfred.NewAlfred("go-pinboard")
     ga.Set("shared", "no")
     ga.Set("replace", "yes")
     // ga.Set("oauth", "username:token")
     ga.Set("browser", "chrome")
+    AccountName, err = ga.Get("username")
+    if err != nil {
+        os.Stdout.Write([]byte("Can't get username!"))
+    }
+    if AccountName == "" {
+        AccountName = "deleteMe"
+    }
+    tags_cache_fn := path.Join(ga.CacheDir,
+        strings.Join([]string{TagsCacheFN, AccountName}, "_"))
+    posts_cache_fn := path.Join(ga.CacheDir,
+        strings.Join([]string{PostsCachFn, AccountName}, "_"))
+    ga.Set("tags_cache_fn", tags_cache_fn)
+    ga.Set("posts_cache_fn", posts_cache_fn)
+    return ga
+}
 
+func main() {
+    ga := Init()
     app := cli.NewApp()
     app.Name = "alfred_pinboard"
     app.Usage = "Alfred Workflow helper to manage Pinboard pins using Alfred"
@@ -63,8 +82,9 @@ func main() {
         },
     }
     setOptions := cli.Command{
-        Name:  "setoptions",
-        Usage: "Sets token and browser options",
+        Name:        "setoptions",
+        Usage:       "Sets token and browser options",
+        Description: "set Workflow related options.",
         Flags: []cli.Flag{
             cli.StringFlag{"browser", "safari", "Browser to fetch the webpage from"},
             cli.StringFlag{"auth", "", "Set authorization token in form of username:token"},
@@ -75,11 +95,15 @@ func main() {
             }
             if t := c.String("auth"); t != "" {
                 ga.Set("oauth", t)
+                _username := strings.Split(t, ":")[0]
+                ga.Set("username", _username)
             }
         },
     }
     postBookmark := cli.Command{
-        Name: "post",
+        Name:        "post",
+        Usage:       "post tag1 tag2 ; extra notes",
+        Description: "Posts a bookmark to cloud for the current page of the browser.",
         Action: func(c *cli.Context) {
             query := strings.Join(c.Args(), " ")
             err := postToCloud(query, ga)
@@ -89,7 +113,8 @@ func main() {
         },
     }
     showTagsCommand := cli.Command{
-        Name: "showtags",
+        Name:  "showtags",
+        Usage: "Shows list of available tags based on intut arguments.",
         Action: func(c *cli.Context) {
             args := []string(c.Args())
             showtags(args, ga)
@@ -209,7 +234,6 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (err error) {
     if err != nil {
         return err
     }
-    // os.Stdout.Write([]byte(oauth))
     if oauth == "" {
         return errors.New("Set your authorization token first!")
     }
@@ -237,7 +261,7 @@ func postToPinboard(req url.URL) (err error) {
     if err != nil {
         return err
     }
-    if res.StatusCode != 200 {
+    if res.StatusCode != http.StatusOK {
         return errors.New(res.Status)
     }
     status, err := ioutil.ReadAll(res.Body)

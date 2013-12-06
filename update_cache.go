@@ -6,6 +6,10 @@ import (
     "bytes"
     "encoding/gob"
     "encoding/xml"
+    "errors"
+    "io/ioutil"
+    "net/http"
+    "net/url"
     // "fmt"
     "os"
     "path"
@@ -57,14 +61,23 @@ var (
     hamid string
 )
 
-func update_tags_cache(ga *Alfred.GoAlfred) (posts *Posts, err error) {
-    posts = new(Posts)
-    rd := strings.NewReader(data)
-    brd := bufio.NewReaderSize(rd, rd.Len())
-    p := make([]byte, rd.Len())
-    // fmt.Println(rd.Len())
-    brd.Read(p)
-    xml.Unmarshal(p, posts)
+func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
+    posts := new(Posts)
+
+    needed, err := updateNeeded(ga)
+    if err != nil {
+        return err
+    }
+    if !needed {
+        return err
+    }
+
+    if err = updatePostsCache(ga); err != nil {
+        return err
+    }
+    if posts, err = readPostsCache(ga); err != nil {
+        return err
+    }
 
     tags_map := make(Tags)
 
@@ -79,14 +92,124 @@ func update_tags_cache(ga *Alfred.GoAlfred) (posts *Posts, err error) {
         }
     }
 
-    tags_cache_fn := path.Join(ga.CacheDir,
-        strings.Join([]string{TagsCacheFN, AccountName}, "_"))
+    tags_cache_fn, err := ga.Get("tags_cache_pn")
+    if err != nil {
+        return err
+    }
     tags_map.store_tags_cache(tags_cache_fn)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
+func updatePostsCache(ga *Alfred.GoAlfred) error {
+    u, err := makeURLWithAuth(ga, "/v1/posts/all")
+    if err != nil {
+        return err
+    }
+
+    res, err := fetchDataFromHttp(u)
+    if err != nil {
+        return err
+    }
+
+    fn, err := ga.Get("posts_cache_fn")
+    if err != nil {
+        return err
+    }
+    file, err := os.OpenFile(fn, os.O_CREATE|os.O_WRONLY, 0666)
+    defer file.Close()
+    if err != nil {
+        return err
+    }
+    n, err := file.WriteString(string(res))
+    if n != len(res) {
+        return errors.New("Wrote different # of bytes than expected.")
+    }
+    return nil
+}
+
+func readPostsCache(ga *Alfred.GoAlfred) (posts *Posts, err error) {
+    posts = new(Posts)
+
+    fn, err := ga.Get("posts_cache_fn")
     if err != nil {
         return nil, err
     }
-
+    file, err := os.Open(fn)
+    defer file.Close()
+    if err != nil {
+        return nil, err
+    }
+    result, err := ioutil.ReadAll(file)
+    if err != nil {
+        return nil, err
+    }
+    rd := strings.NewReader(string(result))
+    brd := bufio.NewReaderSize(rd, rd.Len())
+    p := make([]byte, rd.Len())
+    brd.Read(p)
+    if err = xml.Unmarshal(p, posts); err != nil {
+        return nil, err
+    }
     return posts, nil
+}
+
+func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
+    u, err := makeURLWithAuth(ga, "/v1/posts/update")
+    if err != nil {
+        return false, err
+    }
+
+    status, err := fetchDataFromHttp(u)
+    if err != nil {
+        return false, err
+    }
+
+    var pinRes pinboardResponse
+    if err = xml.Unmarshal(status, &pinRes); err != nil {
+        return false, err
+    }
+    if pinRes.UpdateTime.Update.Before(time.Now()) { // Always update!!!
+        return true, nil
+    } else {
+        return false, nil
+    }
+    return
+}
+
+func fetchDataFromHttp(u url.URL) ([]byte, error) {
+    res, err := http.Get(u.String())
+    if err != nil {
+        return nil, err
+    }
+    if res.StatusCode != http.StatusOK {
+        return nil, errors.New(res.Status)
+    }
+    result, err := ioutil.ReadAll(res.Body)
+    res.Body.Close()
+    if err != nil {
+        return nil, err
+    }
+    return result, nil
+}
+
+func makeURLWithAuth(ga *Alfred.GoAlfred, pathURL string) (url.URL, error) {
+    u := url.URL{}
+    u.Scheme = hostURLScheme
+    u.Host = path.Join(hostURLPinboard, pathURL)
+    q := u.Query()
+    auth_token, err := ga.Get("oauth")
+    if err != nil {
+        return url.URL{}, err
+    } else if auth_token == "" {
+        return url.URL{}, errors.New("Set your authorization token first!")
+    }
+    q.Set("auth_token", auth_token)
+    u.RawQuery = q.Encode()
+    return u, nil
 }
 
 func (tm *Tags) store_tags_cache(fn string) error {
