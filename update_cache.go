@@ -128,6 +128,7 @@ func updatePostsCache(ga *Alfred.GoAlfred) error {
     if n != len(res) {
         return errors.New("Wrote different # of bytes than expected.")
     }
+    ga.Set("update_time", time.Now().Format(time.RFC3339Nano))
     return nil
 }
 
@@ -172,7 +173,17 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
     if err = xml.Unmarshal(status, &pinRes); err != nil {
         return false, err
     }
-    if pinRes.UpdateTime.Update.Before(time.Now()) { // Always update!!!
+
+    last_update, err := ga.Get("update_time")
+    if err != nil {
+        return false, err
+    }
+
+    lastTime, err := time.Parse(time.RFC3339Nano, last_update)
+    if err != nil {
+        return false, err
+    }
+    if pinRes.UpdateTime.Update.After(lastTime) {
         return true, nil
     } else {
         return false, nil
