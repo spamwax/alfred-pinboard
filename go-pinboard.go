@@ -78,7 +78,10 @@ func main() {
         Name:  "update",
         Usage: "Fetches all the bookmarks and updates the tags cache.",
         Action: func(c *cli.Context) {
-            update_tags_cache(ga)
+            err := update_tags_cache(ga)
+            if err != nil {
+                os.Stdout.WriteString(err.Error())
+            }
         },
     }
     setOptions := cli.Command{
@@ -261,9 +264,7 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (err error) {
 }
 
 func postToPinboard(req url.URL) (err error) {
-    // fmt.Printf("req: %v\n", req.String())
     res, err := http.Get(req.String())
-    // fmt.Printf("res: %v\n", res.StatusCode)
     if err != nil {
         return err
     }
@@ -275,12 +276,14 @@ func postToPinboard(req url.URL) (err error) {
     if err != nil {
         return err
     }
-    var pinRes pinboardResponse
+    var pinRes pinboardResultResponse
+    os.Stdout.WriteString(string(status))
     if err = xml.Unmarshal(status, &pinRes); err != nil {
         return err
     }
-    if pinRes.Result.Code != "done" {
-        return errors.New(pinRes.Result.Code)
+    // os.Stdout.WriteString("hamid: " + pinRes.Code)
+    if pinRes.Code != "done" {
+        return errors.New(pinRes.Code)
     }
     return nil
 

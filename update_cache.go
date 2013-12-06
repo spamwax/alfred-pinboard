@@ -7,35 +7,24 @@ import (
     "encoding/gob"
     "encoding/xml"
     "errors"
+    "fmt"
     "io/ioutil"
     "net/http"
     "net/url"
-    // "fmt"
     "os"
     "path"
     "strings"
     "time"
 )
 
-var data = `<?xml version="1.0" encoding="UTF-8" ?>
-<posts user="hamid">
-<post href="http://vimeo.com/37562944#" time="2013-03-15T07:07:48Z" description="See Through 3D Desktop, on Vimeo" extended="" tag="3d ui screen monitor desktop leapmotion" hash="62e78977500a21754caa741fcafa3695" meta="ddf8de5b3a6d2cd6d7562c2ae27902d4"  shared="yes"  />
-<post href="http://www.itefix.no/phpws/index.php?module=phpwsbb&amp;PHPWSBB_MAN_OP=view&amp;PHPWS_MAN_ITEMS[]=343" time="2013-03-09T11:38:25Z" description="Icon Sets and Designers Directory - Iconify.info - A comprehensive curated gallery of icons and icon-related resources" extended="" tag="icon font free vector-graphic svg" hash="5b3f7ff0257a582531c8f33e703f76a5" meta="b38c248e539cf132ce8c09207931f33a"  shared="no"  />
-<post href="http://durak.org/cvswebsites/howto-cvs/node37.html" time="2006-03-03T20:55:18Z" description="CVS Server Setup" extended="CVS Server Setup" tag="Learn screen Linux CVS" hash="f99a793264f1a3ef8e8ecdc7d1f7c154" meta="7da1d359a76955fcbd2cbce622483f63"  shared="no"  />
-</posts>`
-
-type pinboardResponse struct {
-    Result     pResult `xml:"result"`
-    Posts      Posts   `xml:"posts"`
-    UpdateTime pUpdate `xml:"update"`
+type pinboardUpdateResponse struct {
+    XMLName  xml.Name  `xml:"update"`
+    Datetime time.Time `xml:"time,attr"`
 }
 
-type pResult struct {
-    Code string `xml:"code,attr"`
-}
-
-type pUpdate struct {
-    Update time.Time `xml:"time,attr"`
+type pinboardResultResponse struct {
+    XMLName xml.Name `xml:"result"`
+    Code    string   `xml:"code,attr"`
 }
 
 type Posts struct {
@@ -68,6 +57,7 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
     if err != nil {
         return err
     }
+    fmt.Println("needed", needed)
     if !needed {
         return err
     }
@@ -82,6 +72,7 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
     tags_map := make(Tags)
 
     for _, pin := range posts.Pins {
+        // fmt.Println(pin)
         tags := strings.Fields(pin.Tags)
         if len(tags) != 0 {
             for _, tag := range tags {
@@ -92,10 +83,11 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
         }
     }
 
-    tags_cache_fn, err := ga.Get("tags_cache_pn")
+    tags_cache_fn, err := ga.Get("tags_cache_fn")
     if err != nil {
         return err
     }
+    fmt.Println(tags_cache_fn)
     tags_map.store_tags_cache(tags_cache_fn)
     if err != nil {
         return err
@@ -119,7 +111,8 @@ func updatePostsCache(ga *Alfred.GoAlfred) error {
     if err != nil {
         return err
     }
-    file, err := os.OpenFile(fn, os.O_CREATE|os.O_WRONLY, 0666)
+    os.Stdout.WriteString(fn)
+    file, err := os.Create(fn)
     defer file.Close()
     if err != nil {
         return err
@@ -160,6 +153,7 @@ func readPostsCache(ga *Alfred.GoAlfred) (posts *Posts, err error) {
 
 func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
     u, err := makeURLWithAuth(ga, "/v1/posts/update")
+    fmt.Println(u.String())
     if err != nil {
         return false, err
     }
@@ -169,7 +163,8 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
         return false, err
     }
 
-    var pinRes pinboardResponse
+    var pinRes pinboardUpdateResponse
+    fmt.Println(string(status))
     if err = xml.Unmarshal(status, &pinRes); err != nil {
         return false, err
     }
@@ -179,11 +174,17 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
         return false, err
     }
 
-    lastTime, err := time.Parse(time.RFC3339Nano, last_update)
+    var lastTime time.Time
+    if last_update == "" { // No update has yet been made
+        lastTime, _ = time.Parse(time.RFC3339Nano, "0001-01-01T23:00:00Z")
+    } else {
+        lastTime, err = time.Parse(time.RFC3339Nano, last_update)
+    }
     if err != nil {
         return false, err
     }
-    if pinRes.UpdateTime.Update.After(lastTime) {
+    fmt.Println("last_time", lastTime, "update", pinRes.Datetime)
+    if pinRes.Datetime.After(lastTime) {
         return true, nil
     } else {
         return false, nil
@@ -224,7 +225,7 @@ func makeURLWithAuth(ga *Alfred.GoAlfred, pathURL string) (url.URL, error) {
 }
 
 func (tm *Tags) store_tags_cache(fn string) error {
-    file, err := os.OpenFile(fn, os.O_CREATE|os.O_WRONLY, 0666)
+    file, err := os.Create(fn)
     defer file.Close()
     if err != nil {
         return err
