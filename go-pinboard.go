@@ -1,10 +1,8 @@
 package main
 
 import (
-    "bitbucket.org/listboss/go-alfred"
     "encoding/xml"
     "errors"
-    "github.com/codegangsta/cli"
     "io/ioutil"
     "log"
     "net/http"
@@ -15,6 +13,9 @@ import (
     "strconv"
     "strings"
     "time"
+
+    Alfred "bitbucket.org/listboss/go-alfred"
+    cli "github.com/codegangsta/cli"
 )
 
 var (
@@ -42,7 +43,7 @@ func Init() (ga *Alfred.GoAlfred) {
     ga = Alfred.NewAlfred("go-pinboard")
     ga.Set("shared", "no")
     ga.Set("replace", "yes")
-    ga.Set("browser", "chrome")
+    // ga.Set("browser", "chrome")
     AccountName, err = ga.Get("username")
     if err != nil {
         os.Stdout.Write([]byte("Can't get username!"))
@@ -78,6 +79,8 @@ func main() {
             err := update_tags_cache(ga)
             if err != nil {
                 os.Stdout.WriteString(err.Error())
+            } else {
+                os.Stdout.WriteString("Successfully Updated Local Cache.")
             }
         },
     }

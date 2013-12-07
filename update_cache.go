@@ -1,13 +1,11 @@
 package main
 
 import (
-    "bitbucket.org/listboss/go-alfred"
     "bufio"
     "bytes"
     "encoding/gob"
     "encoding/xml"
     "errors"
-    "fmt"
     "io/ioutil"
     "net/http"
     "net/url"
@@ -15,6 +13,8 @@ import (
     "path"
     "strings"
     "time"
+
+    Alfred "bitbucket.org/listboss/go-alfred"
 )
 
 type pinboardUpdateResponse struct {
@@ -46,18 +46,11 @@ type Link struct {
 
 type Tags map[string]uint
 
-var (
-    hamid string
-)
-
 func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
-    posts := new(Posts)
-
     needed, err := updateNeeded(ga)
     if err != nil {
         return err
     }
-    fmt.Println("needed", needed)
     if !needed {
         return err
     }
@@ -65,14 +58,14 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
     if err = updatePostsCache(ga); err != nil {
         return err
     }
+
+    posts := new(Posts)
     if posts, err = readPostsCache(ga); err != nil {
         return err
     }
 
     tags_map := make(Tags)
-
     for _, pin := range posts.Pins {
-        // fmt.Println(pin)
         tags := strings.Fields(pin.Tags)
         if len(tags) != 0 {
             for _, tag := range tags {
@@ -87,7 +80,6 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
     if err != nil {
         return err
     }
-    fmt.Println(tags_cache_fn)
     tags_map.store_tags_cache(tags_cache_fn)
     if err != nil {
         return err
@@ -111,7 +103,6 @@ func updatePostsCache(ga *Alfred.GoAlfred) error {
     if err != nil {
         return err
     }
-    os.Stdout.WriteString(fn)
     file, err := os.Create(fn)
     defer file.Close()
     if err != nil {
@@ -153,7 +144,6 @@ func readPostsCache(ga *Alfred.GoAlfred) (posts *Posts, err error) {
 
 func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
     u, err := makeURLWithAuth(ga, "/v1/posts/update")
-    fmt.Println(u.String())
     if err != nil {
         return false, err
     }
@@ -164,7 +154,6 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
     }
 
     var pinRes pinboardUpdateResponse
-    fmt.Println(string(status))
     if err = xml.Unmarshal(status, &pinRes); err != nil {
         return false, err
     }
@@ -183,7 +172,6 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
     if err != nil {
         return false, err
     }
-    fmt.Println("last_time", lastTime, "update", pinRes.Datetime)
     if pinRes.Datetime.After(lastTime) {
         return true, nil
     } else {
