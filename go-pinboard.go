@@ -4,7 +4,6 @@ import (
     "encoding/xml"
     "errors"
     "io/ioutil"
-    "log"
     "net/http"
     "net/url"
     "os"
@@ -12,7 +11,6 @@ import (
     "path"
     "strconv"
     "strings"
-    "time"
 
     Alfred "bitbucket.org/listboss/go-alfred"
     cli "github.com/codegangsta/cli"
@@ -137,15 +135,15 @@ func main() {
 }
 
 func showtags(args []string, ga *Alfred.GoAlfred) {
-    _fn := ga.DataDir
-    logfile, _ := os.OpenFile(_fn+"/log.txt", os.O_APPEND|os.O_WRONLY, 0666)
-    var L = log.New(logfile, time.Now().String()+": ", 0)
+    // _fn := ga.DataDir
+    // logfile, _ := os.OpenFile(_fn+"/log.txt", os.O_APPEND|os.O_WRONLY, 0666)
+    // var L = log.New(logfile, time.Now().String()+": ", 0)
 
     if len(args) == 0 {
         // TODO: show the bookmark if it has already bin pinned
         return
     }
-    L.Println(args)
+    // L.Println(args)
 
     // Show tags autocomplete?
     query := strings.Join(args, " ")
