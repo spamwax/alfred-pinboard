@@ -6,7 +6,6 @@ import (
     "encoding/gob"
     "encoding/xml"
     "errors"
-    "fmt"
     "io/ioutil"
     "net/http"
     "net/url"
@@ -81,7 +80,6 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
     if err != nil {
         return err
     }
-    fmt.Println(tags_cache_fn)
     tags_map.store_tags_cache(tags_cache_fn)
     if err != nil {
         return err
@@ -105,7 +103,6 @@ func updatePostsCache(ga *Alfred.GoAlfred) error {
     if err != nil {
         return err
     }
-    os.Stdout.WriteString(fn)
     file, err := os.Create(fn)
     defer file.Close()
     if err != nil {
