@@ -1,7 +1,6 @@
 package main
 
 import (
-    "bitbucket.org/listboss/go-alfred"
     "bufio"
     "bytes"
     "encoding/gob"
@@ -15,6 +14,8 @@ import (
     "path"
     "strings"
     "time"
+
+    Alfred "bitbucket.org/listboss/go-alfred"
 )
 
 type pinboardUpdateResponse struct {
