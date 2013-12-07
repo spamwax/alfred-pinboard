@@ -52,7 +52,6 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
     if err != nil {
         return err
     }
-    fmt.Println("needed", needed)
     if !needed {
         return err
     }
@@ -148,7 +147,6 @@ func readPostsCache(ga *Alfred.GoAlfred) (posts *Posts, err error) {
 
 func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
     u, err := makeURLWithAuth(ga, "/v1/posts/update")
-    fmt.Println(u.String())
     if err != nil {
         return false, err
     }
@@ -159,7 +157,6 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
     }
 
     var pinRes pinboardUpdateResponse
-    fmt.Println(string(status))
     if err = xml.Unmarshal(status, &pinRes); err != nil {
         return false, err
     }
