@@ -17,7 +17,7 @@ import (
 )
 
 var (
-    AccountName      string = "hamid"
+    AccountName      string = "accountName"
     TagsCacheFN      string = "tags_cache"
     PostsCachFn      string = "posts_cache"
     MaxNoResults     int    = 10
@@ -62,7 +62,7 @@ func main() {
     ga := Init()
     app := cli.NewApp()
     app.Name = "alfred_pinboard"
-    app.Usage = "Alfred Workflow helper to manage Pinboard pins using Alfred"
+    app.Usage = "Alfred Workflow to manage Pinboard pins using Alfred"
     app.Action = func(ctx *cli.Context) {
         foo := `NAME:
    alfred_pinboard - Alfred Workflow helper to manage Pinboard pins using Alfred.
@@ -298,7 +298,7 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
         return nil, err
     }
     if len(browser) == 0 {
-        browser = "safarai"
+        browser = "chrome"
     }
     appleScript := appleScriptDetectBrowser[browser]
     b, err := exec.Command("osascript", "-s", "s", "-s", "o", "-e",
