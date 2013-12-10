@@ -199,8 +199,8 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
             auto_complete += " " + tag
         }
         // TODO: generate UUID for the tags so Alfred can learn about them.
-        ga.AddItem("", tag, strconv.Itoa(int(freq)), "no", auto_complete, "",
-            "", Alfred.NewIcon("tag_icon.icns", ""), true)
+        ga.AddItem("", tag, strconv.Itoa(int(freq)), "yes", auto_complete, "",
+            auto_complete, Alfred.NewIcon("tag_icon.icns", ""), false)
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
         ic++
         if ic > MaxNoResults {
