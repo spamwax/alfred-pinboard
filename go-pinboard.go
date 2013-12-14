@@ -82,13 +82,16 @@ func main() {
         Usage:       "Sets token and browser options",
         Description: "set Workflow related options.",
         Flags: []cli.Flag{
-            cli.StringFlag{"browser", "safari", "Browser to fetch the webpage from"},
+            cli.StringFlag{"browser", "chrome", "Browser to fetch the webpage from"},
             cli.StringFlag{"auth", "", "Set authorization token in form of username:token"},
+            cli.StringFlag{"fuzzy,f", "", "Enable fuzzy search"},
         },
         Action: func(c *cli.Context) {
+            // Set browser
             if b := c.String("browser"); b != "" {
                 ga.Set("browser", b)
             }
+            // Set authorization tokens
             if t := c.String("auth"); t != "" {
                 ga.Set("oauth", t)
                 _username := strings.Split(t, ":")[0]
@@ -99,6 +102,21 @@ func main() {
                     strings.Join([]string{PostsCachFn, _username}, "_"))
                 ga.Set("tags_cache_fn", tags_cache_fn)
                 ga.Set("posts_cache_fn", posts_cache_fn)
+                if err := update_tags_cache(ga); err != nil {
+                    os.Stdout.WriteString("Err Setting Auth. " + err.Error())
+                } else {
+                    os.Stdout.WriteString("Successfully Set Auth. Token.")
+                }
+            }
+            // Enable/Disable fuzzy search
+            if value := c.String("fuzzy"); value != "" {
+                if value == "yes" || value == "no" {
+                    if err := ga.Set("fuzzy_search", value); err != nil {
+                        os.Stdout.WriteString("Err setting fuzzy. " + err.Error())
+                    } else {
+                        os.Stdout.WriteString("Successfully changed\nfuzzy search setting.")
+                    }
+                }
             }
         },
     }
@@ -150,7 +168,8 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     if err != nil {
         return nil, err
     }
-    if len(browser) == 0 {
+    browser = strings.ToLower(browser)
+    if len(browser) == 0 || (browser != "chrome" && browser != "safari") {
         browser = "chrome"
     }
     appleScript := appleScriptDetectBrowser[browser]

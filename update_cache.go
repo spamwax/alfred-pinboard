@@ -165,10 +165,10 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
 
     var lastTime time.Time
     if last_update == "" { // No update has yet been made
-        lastTime, _ = time.Parse(time.RFC3339Nano, "0001-01-01T23:00:00Z")
-    } else {
-        lastTime, err = time.Parse(time.RFC3339Nano, last_update)
+        last_update = "0001-01-01T23:00:00Z"
     }
+    lastTime, err = time.Parse(time.RFC3339Nano, last_update)
+
     if err != nil {
         return false, err
     }

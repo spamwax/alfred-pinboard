@@ -3,6 +3,7 @@ package main
 import (
     "os"
     "path"
+    "regexp"
     "sort"
     "strconv"
     "strings"
@@ -66,13 +67,11 @@ func showtags(args []string, ga *Alfred.GoAlfred) {
 
 // args: list of tags that user has input before entering 'note'
 func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
-    tags_cache_fn := path.Join(ga.CacheDir,
-        strings.Join([]string{TagsCacheFN, AccountName}, "_"))
     noTagQ := len(args)
     last_arg := args[noTagQ-1]
     // TODO: Add setting so that user can toggle showing lower/upper case tags
     last_arg = strings.ToLower(last_arg)
-    tags, err := getTagsFor(last_arg, tags_cache_fn)
+    tags, err := getTagsFor(last_arg, ga)
     if err != nil {
         return err
     }
@@ -101,22 +100,48 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
     return nil
 }
 
-func getTagsFor(q string, tags_cache_fn string) (m sortedTags, err error) {
+func getTagsFor(q string, ga *Alfred.GoAlfred) (m sortedTags, err error) {
     // TODO: Use Pinboard's api to get list of popular tags and add to this
+    tags_cache_fn := path.Join(ga.CacheDir,
+        strings.Join([]string{TagsCacheFN, AccountName}, "_"))
     tags_map, err := load_tags_cache(tags_cache_fn)
     if err != nil {
         return nil, err
     }
 
-    // m = make(sortedTags)
+    // If fuzzy search is search, compile the corresponding regular expression.
+    var fuzzy string
+    var re *regexp.Regexp
+    if fuzzy, err = ga.Get("fuzzy_search"); err != nil {
+        return nil, err
+    }
+    regexp_exp := ""
+    if fuzzy == "yes" {
+        letters := strings.Split(q, "")
+        for _, v := range letters {
+            regexp_exp += v + "+.*"
+        }
+        re = regexp.MustCompile(regexp_exp)
+    }
+
+    // Iterate over all tags and search for the input query
     for tag, count := range tags_map {
         if count == 0 {
             continue
         }
-        if strings.Contains(strings.ToLower(tag), q) {
-            m = append(m, tagpair{tag, count})
+        if fuzzy == "yes" {
+            if re.MatchString(strings.ToLower(tag)) {
+                m = append(m, tagpair{tag, count})
+            }
+        } else {
+            if strings.Contains(strings.ToLower(tag), q) {
+                // tagsMap[tag] := count
+                m = append(m, tagpair{tag, count})
+            }
         }
     }
+
+    // Sort based on descending order of tag freq
     sort.Sort(m)
     return m, nil
 }
