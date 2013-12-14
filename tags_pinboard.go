@@ -1,0 +1,132 @@
+package main
+
+import (
+    "os"
+    "path"
+    "sort"
+    "strconv"
+    "strings"
+
+    Alfred "bitbucket.org/listboss/go-alfred"
+)
+
+type tagpair struct {
+    name  string
+    count uint
+}
+
+type sortedTags []tagpair
+
+func (b sortedTags) Len() int           { return len(b) }
+func (b sortedTags) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
+func (b sortedTags) Less(i, j int) bool { return b[i].count > b[j].count }
+
+func showtags(args []string, ga *Alfred.GoAlfred) {
+    // _fn := ga.DataDir
+    // logfile, _ := os.OpenFile(_fn+"/log.txt", os.O_APPEND|os.O_WRONLY, 0666)
+    // var L = log.New(logfile, time.Now().String()+": ", 0)
+
+    if len(args) == 0 {
+        // TODO: show the bookmark if it has already bin pinned
+        return
+    }
+    // L.Println(args)
+
+    // Show tags autocomplete?
+    query := strings.Join(args, " ")
+    showTags := true
+    if strings.Contains(query, commentCharacter) {
+        for _, arg := range args {
+            if len(arg) > 0 {
+                if strings.Contains(arg, commentCharacter) {
+                    if string(arg[0]) == commentCharacter &&
+                        (len(arg) == 1 || string(arg[1]) != commentCharacter) {
+                        showTags = false
+                        break
+                    }
+                }
+            }
+        }
+    }
+    if showTags {
+        err := generateTagSuggestions(args, ga)
+        if err != nil {
+            ga.MakeError(err)
+            ga.WriteToAlfred()
+            os.Exit(1)
+        }
+        ga.WriteToAlfred()
+    } else {
+        // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
+        ga.AddItem("chichichi", "Hit Enter to save the bookmark.", query, "yes",
+            "", "", query, Alfred.NewIcon("bookmark.icns", ""), false)
+        ga.WriteToAlfred()
+    }
+}
+
+// args: list of tags that user has input before entering 'note'
+func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
+    tags_cache_fn := path.Join(ga.CacheDir,
+        strings.Join([]string{TagsCacheFN, AccountName}, "_"))
+    noTagQ := len(args)
+    last_arg := args[noTagQ-1]
+    // TODO: Add setting so that user can toggle showing lower/upper case tags
+    last_arg = strings.ToLower(last_arg)
+    tags, err := getTagsFor(last_arg, tags_cache_fn)
+    if err != nil {
+        return err
+    }
+
+    ic := 0
+    for _, tp := range tags {
+        tag := tp.name
+        freq := tp.count
+
+        uid := strconv.Itoa(int(freq))
+        subtitle := uid
+        auto_complete := tag
+        // Add the current selected tags to the auto_complete
+        if noTagQ >= 2 {
+            auto_complete = strings.Join(args[:noTagQ-1], " ")
+            auto_complete += " " + tag
+        }
+        ga.AddItem(uid, tag, subtitle, "yes", auto_complete, "", auto_complete,
+            Alfred.NewIcon("tag_icon.icns", ""), false)
+        // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
+        ic++
+        if ic > MaxNoResults {
+            break
+        }
+    }
+    return nil
+}
+
+func getTagsFor(q string, tags_cache_fn string) (m sortedTags, err error) {
+    // TODO: Use Pinboard's api to get list of popular tags and add to this
+    tags_map, err := load_tags_cache(tags_cache_fn)
+    if err != nil {
+        return nil, err
+    }
+
+    // m = make(sortedTags)
+    for tag, count := range tags_map {
+        if count == 0 {
+            continue
+        }
+        if strings.Contains(strings.ToLower(tag), q) {
+            m = append(m, tagpair{tag, count})
+        }
+    }
+    sort.Sort(m)
+    return m, nil
+}
+
+func parseTags(args string) (tags, desc string) {
+    foo_ := strings.Split(args, commentCharacter)
+    tags = strings.Trim(foo_[0], " ")
+    desc = ""
+    if len(foo_) > 1 {
+        desc = strings.Trim(foo_[1], " ")
+    }
+    return tags, desc
+}
