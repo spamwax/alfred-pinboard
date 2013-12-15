@@ -55,6 +55,7 @@ func getBookmarksContaining(query []string, ga *Alfred.GoAlfred) (err error) {
     return
 }
 
+// Workflow will search these 'attributes' of each bookmark
 var searchFields = []string{"Desc", "Tags", "Notes", "Url"}
 
 func bookmarksContain(query []string, ga *Alfred.GoAlfred) (sb sortedBookmarks, err error) {
@@ -64,7 +65,7 @@ func bookmarksContain(query []string, ga *Alfred.GoAlfred) (sb sortedBookmarks, 
         return nil, err
     }
 
-    // If fuzzy search is search, compile the corresponding regular expression.
+    // If fuzzy search is set, compile the corresponding regular expression.
     var fuzzy string
     if fuzzy, err = ga.Get("fuzzy_search"); err != nil {
         return nil, err
@@ -82,13 +83,11 @@ func bookmarksContain(query []string, ga *Alfred.GoAlfred) (sb sortedBookmarks, 
             for _, field_ := range searchFields {
                 fcontent := v.FieldByName(field_).String()
                 fcontent = strings.ToLower(fcontent)
-                var m bool
                 if fuzzy == "yes" {
-                    m = re.MatchString(fcontent)
+                    found_query = re.MatchString(fcontent)
                 } else {
-                    m = strings.Contains(fcontent, q)
+                    found_query = strings.Contains(fcontent, q)
                 }
-                found_query = found_query || m
                 if found_query {
                     break
                 }

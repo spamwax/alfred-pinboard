@@ -39,7 +39,6 @@ func Init() (ga *Alfred.GoAlfred) {
     ga = Alfred.NewAlfred("go-pinboard")
     ga.Set("shared", "no")
     ga.Set("replace", "yes")
-    // ga.Set("browser", "chrome")
     AccountName, err = ga.Get("username")
     if err != nil {
         ga.MakeError(err)

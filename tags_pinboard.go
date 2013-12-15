@@ -31,7 +31,6 @@ func showtags(args []string, ga *Alfred.GoAlfred) {
         // TODO: show the bookmark if it has already bin pinned
         return
     }
-    // L.Println(args)
 
     // Show tags autocomplete?
     query := strings.Join(args, " ")
@@ -59,7 +58,7 @@ func showtags(args []string, ga *Alfred.GoAlfred) {
         ga.WriteToAlfred()
     } else {
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
-        ga.AddItem("chichichi", "Hit Enter to save the bookmark.", query, "yes",
+        ga.AddItem("", "Hit Enter to save the bookmark.", query, "yes",
             "", "", query, Alfred.NewIcon("bookmark.icns", ""), false)
         ga.WriteToAlfred()
     }
