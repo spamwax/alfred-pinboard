@@ -86,7 +86,14 @@ When fuzzy search is enabled, the tags/bookmarks that contain the query letters 
 	
 	![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-max-tags.png)
 	![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-max-bmarks.png)
+
+- You can show the current settings value using:
+```pset show```
+
+	Hitting enter on each item will let you set that option.
 	
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-show.png)
+
 ## Alfred Helper for Go
 In the process of writing this workflow, I have written a small but full feature Go package that helps with the development of the Alfred workflows in Go. It's very similar to [other Alfred Helpers](http://dferg.us/workflows-class/) just written in Go language, you can check it out at:
 
