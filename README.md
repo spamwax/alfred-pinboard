@@ -23,11 +23,11 @@ If you don't have a token, get one from Pinbaords' [setting's page](https://pinb
 
 Then invoke Alfred and enter your username:token after the ***"pa"*** keyword:
 
-![image](authentication.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/authentication.png)
 
 This workflow will keep a local cache of the tags that you have in Pinboard. To update the cache, you need to issue the ***"pu"*** command:
 
-![image](update.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/update.png)
 
 Use this command once in while to keep the local cache up-to-date.
 
@@ -40,17 +40,17 @@ p tag1 tag2 tag3 ; some optional note
 
 The workflow will show a list of your current tags as you enter the command:
 
-![image](tag-suggestion-1.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/tag-suggestion-1.png)
 
 The number below each tag shows how many times you have used it in your Pinboard service.
 You can move Alfred's highlighter to the desired tag and hit '**Tab**' to autocomplete it.
 
-![image](tag-suggestion-2.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/tag-suggestion-2.png)
 
 To finish the process just enter a semi-colon ***;*** after the last tag and hit enter.
 If you want to add extra description to the bookmark you can add it after the semi-colon:
 
-![image](adding-notes.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/adding-notes.png)
 
 ## Usage (search bookmarks):
 Searching your bookmarks is easy.
@@ -63,29 +63,29 @@ Workflow will use the text you enter in Alfred and show list of bookmarks that c
 
 The search result is ordered in descending order of dates they were posted to your Pinboard account.
 
-![image](bookmarks-search-results.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/bookmarks-search-results.png)
 
 ## Additional Settings
 - The default browser that this workflow uses is Chrome, you can change it to Safari using
 ```pset browser``` and then select one of the supported browsers.
 
-![image](set-browser.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-browser.png)
 
 - To enable/disable fuzzy search of tags/bookmarks, use:
 ```pset fuzzy``` and then select one of the options.
 
-![image](set-fuzzy.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-fuzzy.png)
 
 When fuzzy search is enabled, the tags/bookmarks that contain the query letters in the given order are displayed:
 
-![image](fuzzy-search-tags.png)
+![image](https://bitbucket.org/listboss/go-pinboard/wiki/fuzzy-search-tags.png)
 
 - You can set the max. number of tags or bookmarks that you want to be displayed using these two keywords:
 	- ```pset tags```
 	- ```pset bmarks```
 	
-	![image](set-max-tags.png)
-	![image](set-max-bmarks.png)
+	![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-max-tags.png)
+	![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-max-bmarks.png)
 	
 ## Alfred Helper for Go
 In the process of writing this workflow, I have written a small but full feature Go package that helps with the development of the Alfred workflows in Go. It's very similar to [other Alfred Helpers](http://dferg.us/workflows-class/) just written in Go language, you can check it out at:
