@@ -88,6 +88,9 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
             auto_complete = strings.Join(args[:noTagQ-1], " ")
             auto_complete += " " + tag
         }
+        if freq == 0 {
+            subtitle = "NEW TAG"
+        }
         ga.AddItem("", tag, subtitle, "yes", auto_complete, "", auto_complete,
             Alfred.NewIcon("tag_icon.icns", ""), false)
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
@@ -123,6 +126,7 @@ func getTagsFor(q string, ga *Alfred.GoAlfred) (m sortedTags, err error) {
         re = regexp.MustCompile(regexp_exp)
     }
 
+    exact_match := false
     // Iterate over all tags and search for the input query
     for tag, count := range tags_map {
         if count == 0 {
@@ -138,10 +142,16 @@ func getTagsFor(q string, ga *Alfred.GoAlfred) (m sortedTags, err error) {
                 m = append(m, tagpair{tag, count})
             }
         }
+        if tag == q {
+            exact_match = true
+        }
     }
 
     // Sort based on descending order of tag freq
     sort.Sort(m)
+    if !exact_match {
+        m = append(sortedTags{tagpair{name: q, count: 0}}, m...)
+    }
     return m, nil
 }
 
