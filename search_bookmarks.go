@@ -3,6 +3,7 @@ package main
 import (
     "os"
     "reflect"
+    "regexp"
     "sort"
     "strconv"
     "strings"
@@ -33,13 +34,11 @@ func showBookmarks(query []string, ga *Alfred.GoAlfred) {
 }
 
 func getBookmarksContaining(query []string, ga *Alfred.GoAlfred) (err error) {
-    posts := new(Posts)
-    if posts, err = readPostsCache(ga); err != nil {
+    var sPins sortedBookmarks
+    sPins, err = bookmarksContain(query, ga)
+    if err != nil {
         return err
     }
-
-    var sPins sortedBookmarks
-    sPins = bookmarksContain(query, posts)
 
     ic := 0
     for idx, v := range sPins {
@@ -49,26 +48,48 @@ func getBookmarksContaining(query []string, ga *Alfred.GoAlfred) (err error) {
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
 
         ic++
-        if ic > MaxNoResults {
+        if ic == MaxNoResults_Bookmarks {
             break
         }
     }
     return
 }
 
-var searchFields = []string{"Desc", "Tags", "Notes"}
+var searchFields = []string{"Desc", "Tags", "Notes", "Url"}
 
-func bookmarksContain(query []string, posts *Posts) (sb sortedBookmarks) {
+func bookmarksContain(query []string, ga *Alfred.GoAlfred) (sb sortedBookmarks, err error) {
+
+    posts := new(Posts)
+    if posts, err = readPostsCache(ga); err != nil {
+        return nil, err
+    }
+
+    // If fuzzy search is search, compile the corresponding regular expression.
+    var fuzzy string
+    if fuzzy, err = ga.Get("fuzzy_search"); err != nil {
+        return nil, err
+    }
+    var re *regexp.Regexp
+
     for _, pin := range posts.Pins {
         matchedPin := true
         v := reflect.ValueOf(pin)
         for _, q := range query {
             found_query := false
+            if fuzzy == "yes" {
+                re = buildRegExp(q)
+            }
             for _, field_ := range searchFields {
                 f := v.FieldByName(field_)
                 fcontent := f.Interface().(string)
                 fcontent = strings.ToLower(fcontent)
-                found_query = found_query || strings.Contains(fcontent, q)
+                var m bool
+                if fuzzy == "yes" {
+                    m = re.MatchString(fcontent)
+                } else {
+                    m = strings.Contains(fcontent, q)
+                }
+                found_query = found_query || m
                 if found_query {
                     break
                 }
@@ -83,5 +104,5 @@ func bookmarksContain(query []string, posts *Posts) (sb sortedBookmarks) {
         }
     }
     sort.Sort(sb)
-    return sb
+    return sb, err
 }

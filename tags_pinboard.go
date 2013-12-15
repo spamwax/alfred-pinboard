@@ -93,7 +93,7 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
             Alfred.NewIcon("tag_icon.icns", ""), false)
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
         ic++
-        if ic > MaxNoResults {
+        if ic == MaxNoResults_Tags {
             break
         }
     }

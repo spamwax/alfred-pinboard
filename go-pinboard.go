@@ -5,6 +5,8 @@ import (
     "os"
     "os/exec"
     "path"
+    "regexp"
+    "strconv"
     "strings"
 
     Alfred "bitbucket.org/listboss/go-alfred"
@@ -12,13 +14,14 @@ import (
 )
 
 var (
-    AccountName      string = "accountName"
-    TagsCacheFN      string = "tags_cache"
-    PostsCachFn      string = "posts_cache"
-    MaxNoResults     int    = 10
-    hostURLPinboard  string = "api.pinboard.in"
-    hostURLScheme    string = "https"
-    commentCharacter string = ";"
+    AccountName            string = "accountName"
+    TagsCacheFN            string = "tags_cache"
+    PostsCachFn            string = "posts_cache"
+    MaxNoResults_Tags      int    = 10
+    MaxNoResults_Bookmarks int    = 10
+    hostURLPinboard        string = "api.pinboard.in"
+    hostURLScheme          string = "https"
+    commentCharacter       string = ";"
 )
 
 type pinboardPayload struct {
@@ -39,7 +42,9 @@ func Init() (ga *Alfred.GoAlfred) {
     // ga.Set("browser", "chrome")
     AccountName, err = ga.Get("username")
     if err != nil {
-        os.Stdout.Write([]byte("Can't get username!"))
+        ga.MakeError(err)
+        ga.WriteToAlfred()
+        os.Exit(1)
     }
     if AccountName == "" {
         AccountName = "deleteMe"
@@ -50,6 +55,27 @@ func Init() (ga *Alfred.GoAlfred) {
         strings.Join([]string{PostsCachFn, AccountName}, "_"))
     ga.Set("tags_cache_fn", tags_cache_fn)
     ga.Set("posts_cache_fn", posts_cache_fn)
+    v, _ := ga.Get("max_tags")
+    if v == "" {
+        v = "10"
+    }
+    tmp, err := strconv.ParseInt(v, 10, 32)
+    if err != nil {
+        MaxNoResults_Tags = 10
+    } else {
+        MaxNoResults_Tags = int(tmp)
+    }
+
+    v, _ = ga.Get("max_bookmarks")
+    if v == "" {
+        v = "10"
+    }
+    tmp, err = strconv.ParseInt(v, 10, 32)
+    if err != nil {
+        MaxNoResults_Bookmarks = 10
+    } else {
+        MaxNoResults_Bookmarks = int(tmp)
+    }
     return ga
 }
 
@@ -85,8 +111,17 @@ func main() {
             cli.StringFlag{"browser", "chrome", "Browser to fetch the webpage from"},
             cli.StringFlag{"auth", "", "Set authorization token in form of username:token"},
             cli.StringFlag{"fuzzy,f", "", "Enable fuzzy search"},
+            cli.IntFlag{"max-tags", -1, "Set max. number of tags to show."},
+            cli.IntFlag{"max-bookmarks", -1, "Set max. number of bookmarks to show."},
         },
         Action: func(c *cli.Context) {
+            // Set max number of tags/bookmarks to show
+            if mt := c.Int("max-tags"); mt != -1 {
+                ga.Set("max_tags", strconv.Itoa(mt))
+            }
+            if mb := c.Int("max-bookmarks"); mb != -1 {
+                ga.Set("max_bookmarks", strconv.Itoa(mb))
+            }
             // Set browser
             if b := c.String("browser"); b != "" {
                 ga.Set("browser", b)
@@ -169,6 +204,16 @@ func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {
     q.Set("auth_token", payload.auth_token)
     u.RawQuery = q.Encode()
     return u
+}
+
+func buildRegExp(s string) (re *regexp.Regexp) {
+    letters := strings.Split(s, "")
+    regexp_exp := ""
+    for _, v := range letters {
+        regexp_exp += v + "+.*"
+    }
+    re = regexp.MustCompile(regexp_exp)
+    return
 }
 
 func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
