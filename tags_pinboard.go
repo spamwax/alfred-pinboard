@@ -82,7 +82,7 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
         freq := tp.count
 
         uid := strconv.Itoa(int(freq))
-        subtitle := uid
+        subtitle := "freq: " + uid
         auto_complete := tag
         // Add the current selected tags to the auto_complete
         if noTagQ >= 2 {

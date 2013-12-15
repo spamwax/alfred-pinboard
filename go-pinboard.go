@@ -142,8 +142,16 @@ func main() {
             showtags(args, ga)
         },
     }
+    showBookmarksCommand := cli.Command{
+        Name:  "showbookmarks",
+        Usage: "Show list of bookmarks that contain 'all' the search keywords",
+        Action: func(c *cli.Context) {
+            args := []string(c.Args())
+            showBookmarks(args, ga)
+        },
+    }
     app.Commands = []cli.Command{updateBookmarksCache, setOptions,
-        postBookmark, showTagsCommand}
+        postBookmark, showTagsCommand, showBookmarksCommand}
     app.Run(os.Args)
 }
 
