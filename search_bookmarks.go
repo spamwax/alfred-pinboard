@@ -80,8 +80,7 @@ func bookmarksContain(query []string, ga *Alfred.GoAlfred) (sb sortedBookmarks, 
                 re = buildRegExp(q)
             }
             for _, field_ := range searchFields {
-                f := v.FieldByName(field_)
-                fcontent := f.Interface().(string)
+                fcontent := v.FieldByName(field_).String()
                 fcontent = strings.ToLower(fcontent)
                 var m bool
                 if fuzzy == "yes" {

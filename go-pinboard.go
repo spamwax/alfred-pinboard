@@ -117,10 +117,14 @@ func main() {
         Action: func(c *cli.Context) {
             // Set max number of tags/bookmarks to show
             if mt := c.Int("max-tags"); mt != -1 {
-                ga.Set("max_tags", strconv.Itoa(mt))
+                mtags := strconv.Itoa(mt)
+                ga.Set("max_tags", mtags)
+                os.Stdout.WriteString("Max no. tags to show: " + mtags)
             }
             if mb := c.Int("max-bookmarks"); mb != -1 {
-                ga.Set("max_bookmarks", strconv.Itoa(mb))
+                mbook := strconv.Itoa(mb)
+                ga.Set("max_bookmarks", mbook)
+                os.Stdout.WriteString("Max no. bookmarks to show: " + mbook)
             }
             // Set browser
             if b := c.String("browser"); b != "" {
