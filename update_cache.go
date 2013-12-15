@@ -158,20 +158,20 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
         return false, err
     }
 
-    last_update, err := ga.Get("update_time")
-    if err != nil {
+    // Get the time/date that the cache was last updated
+    var lastTime time.Time
+    var last_update string
+    if last_update, err = ga.Get("update_time"); err != nil {
         return false, err
     }
-
-    var lastTime time.Time
     if last_update == "" { // No update has yet been made
         last_update = "0001-01-01T23:00:00Z"
     }
-    lastTime, err = time.Parse(time.RFC3339Nano, last_update)
 
-    if err != nil {
+    if lastTime, err = time.Parse(time.RFC3339Nano, last_update); err != nil {
         return false, err
     }
+
     if pinRes.Datetime.After(lastTime) {
         return true, nil
     } else {
@@ -201,12 +201,14 @@ func makeURLWithAuth(ga *Alfred.GoAlfred, pathURL string) (url.URL, error) {
     u.Scheme = hostURLScheme
     u.Host = path.Join(hostURLPinboard, pathURL)
     q := u.Query()
+
     auth_token, err := ga.Get("oauth")
     if err != nil {
         return url.URL{}, err
     } else if auth_token == "" {
         return url.URL{}, errors.New("Set your authorization token first!")
     }
+
     q.Set("auth_token", auth_token)
     u.RawQuery = q.Encode()
     return u, nil
@@ -218,12 +220,13 @@ func (tm *Tags) store_tags_cache(fn string) error {
     if err != nil {
         return err
     }
+
     var b bytes.Buffer
     enc := gob.NewEncoder(&b)
-    err = enc.Encode(tm)
-    if err != nil {
+    if err = enc.Encode(tm); err != nil {
         return err
     }
+
     file.Write(b.Bytes())
     return nil
 }
@@ -237,9 +240,9 @@ func load_tags_cache(fn string) (Tags, error) {
 
     tags_map := make(Tags)
     decoder := gob.NewDecoder(file)
-    err = decoder.Decode(&tags_map)
-    if err != nil {
+    if err = decoder.Decode(&tags_map); err != nil {
         return nil, err
     }
+
     return tags_map, nil
 }

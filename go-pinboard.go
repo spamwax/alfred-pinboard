@@ -39,7 +39,6 @@ func Init() (ga *Alfred.GoAlfred) {
     ga = Alfred.NewAlfred("go-pinboard")
     ga.Set("shared", "no")
     ga.Set("replace", "yes")
-    // ga.Set("browser", "chrome")
     AccountName, err = ga.Get("username")
     if err != nil {
         ga.MakeError(err)
@@ -189,9 +188,40 @@ func main() {
             showBookmarks(args, ga)
         },
     }
+    showSettingsCommand := cli.Command{
+        Name:  "showsettings",
+        Usage: "Show Workflow's settings",
+        Action: func(c *cli.Context) {
+            showSettings(ga)
+        },
+    }
     app.Commands = []cli.Command{updateBookmarksCache, setOptions,
-        postBookmark, showTagsCommand, showBookmarksCommand}
+        postBookmark, showTagsCommand, showBookmarksCommand,
+        showSettingsCommand}
     app.Run(os.Args)
+}
+
+func showSettings(ga *Alfred.GoAlfred) {
+    browser, _ := ga.Get("browser")
+    max_tags, _ := ga.Get("max_tags")
+    max_bookmarks, _ := ga.Get("max_bookmarks")
+    fuzzy_search, _ := ga.Get("fuzzy_search")
+    // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
+    ga.AddItem("", "Browser: "+browser, "Browser to use.", "yes", "", "",
+        "pset browser",
+        Alfred.NewIcon("ACD33B7C-7C31-47F4-B8AC-E15E09EC31DD.png", ""), false)
+
+    ga.AddItem("", "No. Tags: "+max_tags, "No. of tags to show.", "yes", "",
+        "", "pset tags", Alfred.NewIcon("tag_icon.icns", ""), false)
+
+    ga.AddItem("", "No. Bookmarks: "+max_bookmarks, "No. of bookmarks to show.",
+        "yes", "", "", "pset bmarks",
+        Alfred.NewIcon("A8EE818C-427B-476F-93FD-02825231464B.png", ""),
+        false)
+
+    ga.AddItem("", "Fuzzy search: "+fuzzy_search, "Use fuzzy search.", "yes",
+        "", "", "pset fuzzy", Alfred.NewIcon("fuzzy_search.icns", ""), false)
+    ga.WriteToAlfred()
 }
 
 func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {

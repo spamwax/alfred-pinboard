@@ -1,5 +1,9 @@
 TODO:
- ☐ sort the tags based on number of usage. @today
- ☐ Add fuzzy search
-   ☐ make it an option to enable/disble fuzzy search.
- ☐ Add bookmark search
+ ☐ Finish the TODOs within the source code
+    ☐ showing the current page of browser if it's already marked
+    ☐ showing pulic popular tags
+ ☐ Add a feature to show the current settings of the workflow in Alfred
+ ✔ sort the tags based on number of usage. @today @done (13-12-15 06:20)
+ ✔ Add fuzzy search @done (13-12-15 06:20)
+   ✔ make it an option to enable/disble fuzzy search. @done (13-12-15 06:20)
+ ✔ Add bookmark search @done (13-12-15 06:20)
