@@ -91,7 +91,7 @@ func generateTagSuggestions(args []string, ga *Alfred.GoAlfred) (err error) {
         if freq == 0 {
             subtitle = "NEW TAG"
         }
-        ga.AddItem("", tag, subtitle, "yes", auto_complete, "", auto_complete,
+        ga.AddItem("", tag, subtitle, "yes", auto_complete+" ", "", auto_complete,
             Alfred.NewIcon("tag_icon.icns", ""), false)
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
         ic++
