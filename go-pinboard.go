@@ -241,10 +241,9 @@ func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {
 }
 
 func buildRegExp(s string) (re *regexp.Regexp) {
-    letters := strings.Split(s, "")
     regexp_exp := ""
-    for _, v := range letters {
-        regexp_exp += v + "+.*"
+    for _, v := range s {
+        regexp_exp += string(v) + "+.*"
     }
     re = regexp.MustCompile(regexp_exp)
     return
