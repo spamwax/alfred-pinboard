@@ -267,11 +267,17 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     out := string(b)
     foo0 := strings.Trim(out, "{}\n")
     foo1 := strings.Split(foo0, ",")
+
     pinURL := strings.Trim(foo1[0], "\" ")
     pinDesc := ""
     if len(foo1) > 1 {
         pinDesc = strings.Trim(foo1[1], "\" ")
     }
+    // If the current page doesn't have title set it to the URL
+    if pinDesc == "" {
+        pinDesc = pinURL
+    }
+
     return []string{pinURL, pinDesc}, err
 }
 
