@@ -241,10 +241,9 @@ func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {
 }
 
 func buildRegExp(s string) (re *regexp.Regexp) {
-    letters := strings.Split(s, "")
     regexp_exp := ""
-    for _, v := range letters {
-        regexp_exp += v + "+.*"
+    for _, v := range s {
+        regexp_exp += string(v) + "+.*"
     }
     re = regexp.MustCompile(regexp_exp)
     return
@@ -268,11 +267,17 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     out := string(b)
     foo0 := strings.Trim(out, "{}\n")
     foo1 := strings.Split(foo0, ",")
+
     pinURL := strings.Trim(foo1[0], "\" ")
     pinDesc := ""
     if len(foo1) > 1 {
         pinDesc = strings.Trim(foo1[1], "\" ")
     }
+    // If the current page doesn't have title set it to the URL
+    if pinDesc == "" {
+        pinDesc = pinURL
+    }
+
     return []string{pinURL, pinDesc}, err
 }
 
