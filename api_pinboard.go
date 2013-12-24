@@ -10,7 +10,21 @@ import (
     Alfred "bitbucket.org/listboss/go-alfred"
 )
 
-func postToCloud(args string, ga *Alfred.GoAlfred) (info []string, err error) {
+var hostURLPinboard string = "api.pinboard.in"
+var hostSchemePinboard string = "https"
+
+type PinboardAPI struct {
+    AccountName     string
+    hostURL         string
+    hostURLScheme   string
+    postURL         string
+    updateURL       string
+    allBookmarksURL string
+    // payload
+    // auth_token
+}
+
+func (parpi PinboardAPI) PostToCloud(args string, ga *Alfred.GoAlfred) (info []string, err error) {
     pinInfo, err := getBrowserInfo(ga)
     if err != nil {
         return pinInfo, err
@@ -39,7 +53,7 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (info []string, err error) {
     return pinInfo, err
 }
 
-func postToPinboard(req url.URL) (err error) {
+func (parpi PinboardAPI) postToPinboard(req url.URL) (err error) {
     res, err := http.Get(req.String())
     if err != nil {
         return err
