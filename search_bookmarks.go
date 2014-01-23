@@ -44,7 +44,7 @@ func getBookmarksContaining(query []string, ga *Alfred.GoAlfred) (err error) {
     for idx, v := range sPins {
         pin := v.bookmark
         icon := Alfred.NewIcon("pinboard-pin.icns", "")
-        ga.AddItem(strconv.Itoa(idx), pin.Desc, pin.Url, "yes", "no", "", pin.Url, icon, false)
+        ga.AddItem(strconv.Itoa(idx), pin.Desc, pin.Url, "yes", "", "", pin.Url, icon, false)
         // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
 
         ic++
