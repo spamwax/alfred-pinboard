@@ -76,6 +76,7 @@ func bookmarksContain(query []string, ga *Alfred.GoAlfred) (sb sortedBookmarks, 
         matchedPin := true
         v := reflect.ValueOf(pin)
         for _, q := range query {
+            q = strings.ToLower(q)
             found_query := false
             if fuzzy == "yes" {
                 re = buildRegExp(q)
