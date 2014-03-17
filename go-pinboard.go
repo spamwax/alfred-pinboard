@@ -37,7 +37,7 @@ type pinboardPayload struct {
 func Init() (ga *Alfred.GoAlfred) {
     var err error
     ga = Alfred.NewAlfred("go-pinboard")
-    ga.Set("shared", "no")
+    // ga.Set("shared", "no")
     ga.Set("replace", "yes")
     AccountName, err = ga.Get("username")
     if err != nil {
@@ -111,6 +111,7 @@ func main() {
             cli.StringFlag{"auth", "", "Set authorization token in form of username:token"},
             cli.StringFlag{"fuzzy,f", "", "Enable fuzzy search"},
             cli.StringFlag{"shared", "", "Set sharing/private status for posted bookmarks"},
+            cli.StringFlag{"tag-only-search", "", "Only search through tags when looking up bookmarks"},
             cli.IntFlag{"max-tags", -1, "Set max. number of tags to show."},
             cli.IntFlag{"max-bookmarks", -1, "Set max. number of bookmarks to show."},
         },
@@ -133,6 +134,10 @@ func main() {
             // Set sharing/private status for bookmarks
             if s := c.String("shared"); s != "" {
                 ga.Set("shared", s)
+            }
+            // Set search option for using tags only
+            if ts := c.String("tag-only-search"); ts != "" {
+                ga.Set("tag_only_search", ts)
             }
             // Set authorization tokens
             if t := c.String("auth"); t != "" {
