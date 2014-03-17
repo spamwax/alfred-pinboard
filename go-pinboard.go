@@ -82,10 +82,10 @@ func main() {
     ga := Init()
     app := cli.NewApp()
     app.Name = "alfred_pinboard"
-    app.Usage = "Alfred Workflow to manage Pinboard pins using Alfred"
+    app.Usage = "Alfred Workflow to manage Pinboard pins."
     app.Action = func(ctx *cli.Context) {
         foo := `NAME:
-   alfred_pinboard - Alfred Workflow helper to manage Pinboard pins using Alfred.
+   alfred_pinboard - Alfred Workflow helper to manage Pinboard pins.
 
    enter "alfred_pinboard help" for more information`
         os.Stdout.Write([]byte(foo))
@@ -255,7 +255,8 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
         return nil, err
     }
     browser = strings.ToLower(browser)
-    if len(browser) == 0 || (browser != "chrome" && browser != "safari") {
+    if len(browser) == 0 ||
+        (browser != "chrome" && browser != "safari" && browser != "chromium") {
         browser = "chrome"
     }
     appleScript := appleScriptDetectBrowser[browser]
@@ -291,6 +292,13 @@ var appleScriptDetectBrowser = map[string]string{
         end run`,
     "chrome": `on run
             tell application "Google Chrome"
+                set theURL to URL of active tab of first window
+                set theDesc to title of active tab of first window
+            end tell
+            return {theURL, theDesc}
+            end run`,
+    "chromium": `on run
+            tell application "Chromium"
                 set theURL to URL of active tab of first window
                 set theDesc to title of active tab of first window
             end tell
