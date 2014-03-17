@@ -110,6 +110,7 @@ func main() {
             cli.StringFlag{"browser", "chrome", "Browser to fetch the webpage from"},
             cli.StringFlag{"auth", "", "Set authorization token in form of username:token"},
             cli.StringFlag{"fuzzy,f", "", "Enable fuzzy search"},
+            cli.StringFlag{"shared", "", "Set sharing/private status for posted bookmarks"},
             cli.IntFlag{"max-tags", -1, "Set max. number of tags to show."},
             cli.IntFlag{"max-bookmarks", -1, "Set max. number of bookmarks to show."},
         },
@@ -128,6 +129,10 @@ func main() {
             // Set browser
             if b := c.String("browser"); b != "" {
                 ga.Set("browser", b)
+            }
+            // Set sharing/private status for bookmarks
+            if s := c.String("shared"); s != "" {
+                ga.Set("shared", s)
             }
             // Set authorization tokens
             if t := c.String("auth"); t != "" {

@@ -30,7 +30,14 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (info []string, err error) {
 
     if payload.shared, err = ga.Get("shared"); err != nil {
         payload.shared = "no"
+    } else {
+        if payload.shared == "yes" || payload.shared == "1" || payload.shared == "on" {
+            payload.shared = "yes"
+        } else {
+            payload.shared = "no"
+        }
     }
+
     payload.auth_token = oauth
 
     urlReq := encodeURL(payload, "/v1/posts/add")
