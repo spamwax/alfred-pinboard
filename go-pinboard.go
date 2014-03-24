@@ -37,7 +37,6 @@ type pinboardPayload struct {
 func Init() (ga *Alfred.GoAlfred) {
 	var err error
 	ga = Alfred.NewAlfred("go-pinboard")
-	ga.Set("shared", "no")
 	ga.Set("replace", "yes")
 	AccountName, err = ga.Get("username")
 	if err != nil {

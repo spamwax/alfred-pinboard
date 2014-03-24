@@ -28,8 +28,8 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (info []string, err error) {
 	payload.description = pinInfo[1]
 	payload.replace = "yes"
 
-	if payload.shared, err = ga.Get("shared"); err != nil {
-		payload.shared = "no"
+	if shared, err := ga.Get("shared"); err == nil {
+		payload.shared = shared
 	}
 	payload.auth_token = oauth
 
