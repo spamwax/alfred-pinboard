@@ -22,6 +22,7 @@ var (
     hostURLPinboard        string = "api.pinboard.in"
     hostURLScheme          string = "https"
     commentCharacter       string = ";"
+    AutoUpdate             string = "no"
 )
 
 type pinboardPayload struct {
@@ -75,6 +76,12 @@ func Init() (ga *Alfred.GoAlfred) {
     } else {
         MaxNoResults_Bookmarks = int(tmp)
     }
+
+    v, err = ga.Get("auto_update")
+    if err == nil && v != "" {
+        AutoUpdate = v
+    }
+
     return ga
 }
 
@@ -112,6 +119,7 @@ func main() {
             cli.StringFlag{"fuzzy,f", "", "Enable fuzzy search"},
             cli.StringFlag{"shared", "", "Set sharing/private status for posted bookmarks"},
             cli.StringFlag{"tag-only-search", "", "Only search through tags when looking up bookmarks"},
+            cli.StringFlag{"auto-update", "no", "Automatically update bookmarks cache after posting a bookmark."},
             cli.IntFlag{"max-tags", -1, "Set max. number of tags to show."},
             cli.IntFlag{"max-bookmarks", -1, "Set max. number of bookmarks to show."},
         },
@@ -140,6 +148,11 @@ func main() {
             if ts := c.String("tag-only-search"); ts != "" {
                 ga.Set("tag_only_search", ts)
                 os.Stdout.WriteString("Tag-only search: " + ts)
+            }
+            // Set auto-update option
+            if au := c.String("auto-update"); au != "" {
+                ga.Set("auto_update", au)
+                os.Stdout.WriteString("Auto updating cache: " + au)
             }
             // Set authorization tokens
             if t := c.String("auth"); t != "" {
@@ -182,6 +195,14 @@ func main() {
             } else {
                 os.Stdout.WriteString(err.Error())
             }
+
+            au := strings.ToLower(AutoUpdate)
+            if au == "yes" || au == "1" || au == "on" {
+                err := update_tags_cache(ga)
+                if err != nil {
+                    os.Stdout.WriteString(err.Error())
+                }
+            }
         },
     }
     showTagsCommand := cli.Command{
@@ -220,6 +241,7 @@ func showSettings(ga *Alfred.GoAlfred) {
     fuzzy_search, _ := ga.Get("fuzzy_search")
     tag_search, _ := ga.Get("tag_only_search")
     shared, _ := ga.Get("shared")
+
     // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
     ga.AddItem("", "Browser: "+browser, "Browser to use.", "yes", "", "",
         "pset browser",
@@ -239,6 +261,11 @@ func showSettings(ga *Alfred.GoAlfred) {
     ga.AddItem("", "Sharing boookmarks: "+shared,
         "Private or Shared bookmarking", "yes", "", "", "pset shared",
         Alfred.NewIcon("shared_bookmarking.png", ""), false)
+
+    ga.AddItem("", "Auto update bookmarks cache: "+AutoUpdate,
+        "Download all bookmarks after posting a new bookmark.",
+        "yes", "", "", "pset auto", Alfred.NewIcon("auto_update.png", ""),
+        false)
 
     ga.AddItem("", "Tag-only search: "+tag_search, "Search only the tags?",
         "yes", "", "", "pset tagonly",

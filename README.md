@@ -87,8 +87,14 @@ When fuzzy search is enabled, the tags/bookmarks that contain the query letters 
 
 - To enable/disable sharing the bookmarks, use:
 	- ```pset shared```
-
+	
 	![image](https://bitbucket.org/listboss/go-pinboard/wiki/shared.png)
+	
+- To enadle/disable auto-updating of the cache that this workflow uses for searching, use the following. Note that by enabling the auto-update, workflow will fetch all your bookmarks from Pinboard after every new bookmark you create using it:
+	- ```pset auto```
+	
+	![image](https://bitbucket.org/listboss/go-pinboard/wiki/auto_update.png)
+	
 
 - You can set the max. number of tags or bookmarks that you want to be displayed using these two keywords:
 	- ```pset tags```
