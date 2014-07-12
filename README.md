@@ -19,7 +19,7 @@ For searching, use ( <kbd>ps</kbd> ) and then type the search keywords.
 
 ## Installation
 After [downloading](https://bitbucket.org/listboss/go-pinboard/downloads) the latest version of the workflow and installing it in Alfred, you need to do a one-time setup to authenticate the Workflow. This Workflow only uses username/token method so you won't need to enter your password. (This is the *suggested* way of using Pinboard's API).
-If you don't have a token, get one from Pinbaords' [setting's page](https://pinboard.in/settings/password).
+If you don't have a token, get one from Pinbaord's [settings page](https://pinboard.in/settings/password).
 
 Then invoke Alfred and enter your username:token after the ***"pa"*** keyword:
 
@@ -47,7 +47,7 @@ You can move Alfred's highlighter to the desired tag and hit '**Tab**' to autoco
 
 ![image](https://bitbucket.org/listboss/go-pinboard/wiki/tag-suggestion-2.png)
 
-To finish the process just enter a semi-colon ***;*** after the last tag and hit enter.
+To finish the process just press Enter.
 If you want to add extra description to the bookmark you can add it after the semi-colon:
 
 ![image](https://bitbucket.org/listboss/go-pinboard/wiki/adding-notes.png)
@@ -80,10 +80,20 @@ When fuzzy search is enabled, the tags/bookmarks that contain the query letters 
 
 ![image](https://bitbucket.org/listboss/go-pinboard/wiki/fuzzy-search-tags.png)
 
+- If you only want to search tags (using ```ps tag_name``` command), set the options like this:
+	- ```pset tagonly```
+
+	![image](https://bitbucket.org/listboss/go-pinboard/wiki/tag_only.png)
+
+- To enable/disable sharing the bookmarks, use:
+	- ```pset shared```
+
+	![image](https://bitbucket.org/listboss/go-pinboard/wiki/shared.png)
+
 - You can set the max. number of tags or bookmarks that you want to be displayed using these two keywords:
 	- ```pset tags```
 	- ```pset bmarks```
-	
+
 	![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-max-tags.png)
 	![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-max-bmarks.png)
 
@@ -91,7 +101,7 @@ When fuzzy search is enabled, the tags/bookmarks that contain the query letters 
 ```pset show```
 
 	Hitting enter on each item will let you set that option.
-	
+
 ![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-show.png)
 
 ## Alfred Helper for Go

@@ -134,10 +134,12 @@ func main() {
             // Set sharing/private status for bookmarks
             if s := c.String("shared"); s != "" {
                 ga.Set("shared", s)
+                os.Stdout.WriteString("Sharing bookmarks: " + s)
             }
             // Set search option for using tags only
             if ts := c.String("tag-only-search"); ts != "" {
                 ga.Set("tag_only_search", ts)
+                os.Stdout.WriteString("Tag-only search: " + ts)
             }
             // Set authorization tokens
             if t := c.String("auth"); t != "" {
@@ -216,6 +218,8 @@ func showSettings(ga *Alfred.GoAlfred) {
     max_tags, _ := ga.Get("max_tags")
     max_bookmarks, _ := ga.Get("max_bookmarks")
     fuzzy_search, _ := ga.Get("fuzzy_search")
+    tag_search, _ := ga.Get("tag_only_search")
+    shared, _ := ga.Get("shared")
     // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
     ga.AddItem("", "Browser: "+browser, "Browser to use.", "yes", "", "",
         "pset browser",
@@ -226,11 +230,19 @@ func showSettings(ga *Alfred.GoAlfred) {
 
     ga.AddItem("", "No. Bookmarks: "+max_bookmarks, "No. of bookmarks to show.",
         "yes", "", "", "pset bmarks",
-        Alfred.NewIcon("A8EE818C-427B-476F-93FD-02825231464B.png", ""),
+        Alfred.NewIcon("pin.png", ""),
         false)
 
     ga.AddItem("", "Fuzzy search: "+fuzzy_search, "Use fuzzy search.", "yes",
         "", "", "pset fuzzy", Alfred.NewIcon("fuzzy_search.icns", ""), false)
+
+    ga.AddItem("", "Sharing boookmarks: "+shared,
+        "Private or Shared bookmarking", "yes", "", "", "pset shared",
+        Alfred.NewIcon("shared_bookmarking.png", ""), false)
+
+    ga.AddItem("", "Tag-only search: "+tag_search, "Search only the tags?",
+        "yes", "", "", "pset tagonly",
+        Alfred.NewIcon("tag_only.png", ""), false)
     ga.WriteToAlfred()
 }
 
