@@ -374,3 +374,8 @@ var appleScriptDetectBrowser = map[string]string{
             return {theURL, theDesc}
             end run`,
 }
+
+// for firefox we could try to only raise the window using:
+// tell application "System Events"
+//     perform action "AXRaise" of window 1 of process "Firefox"
+// end tell
