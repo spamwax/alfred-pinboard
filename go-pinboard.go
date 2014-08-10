@@ -152,7 +152,6 @@ func main() {
             // Set auto-update option
             if au := c.String("auto-update"); au != "" {
                 ga.Set("auto_update", au)
-                os.Stdout.WriteString("Auto updating cache: " + au)
             }
             // Set authorization tokens
             if t := c.String("auth"); t != "" {
@@ -305,7 +304,8 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     }
     browser = strings.ToLower(browser)
     if len(browser) == 0 ||
-        (browser != "chrome" && browser != "safari" && browser != "chromium") {
+        (browser != "chrome" && browser != "safari" && browser != "chromium" &&
+            browser != "firefox") {
         browser = "chrome"
     }
     appleScript := appleScriptDetectBrowser[browser]
@@ -351,6 +351,26 @@ var appleScriptDetectBrowser = map[string]string{
                 set theURL to URL of active tab of first window
                 set theDesc to title of active tab of first window
             end tell
+            return {theURL, theDesc}
+            end run`,
+    "firefox": `on run
+            tell application "Firefox"
+                activate
+                set w to item 1 of window 1
+                set theDesc to name of w
+            end tell
+            tell application "System Events"
+                delay 0.5
+                set myApp to name of first application process whose frontmost is true
+                if myApp is "Firefox" then
+                    tell application "System Events"
+                        keystroke "l" using command down
+                        keystroke "c" using command down
+                    end tell
+                    delay 0.5
+                end if
+            end tell
+            set theURL to get the clipboard
             return {theURL, theDesc}
             end run`,
 }
