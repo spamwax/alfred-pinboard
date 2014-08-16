@@ -360,15 +360,16 @@ var appleScriptDetectBrowser = map[string]string{
                 set theDesc to name of w
             end tell
             tell application "System Events"
-                delay 0.5
                 set myApp to name of first application process whose frontmost is true
                 if myApp is "Firefox" then
                     tell application "System Events"
                         keystroke "l" using command down
+                        delay 0.5
                         keystroke "c" using command down
                     end tell
                     delay 0.5
                 end if
+                delay 0.5
             end tell
             set theURL to get the clipboard
             return {theURL, theDesc}
