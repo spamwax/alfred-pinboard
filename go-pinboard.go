@@ -250,15 +250,7 @@ func buildRegExp(s string) (re *regexp.Regexp) {
 }
 
 func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
-    browser, err := ga.Get("browser")
-    if err != nil {
-        return nil, err
-    }
-    browser = strings.ToLower(browser)
-    if len(browser) == 0 || (browser != "chrome" && browser != "safari") {
-        browser = "chrome"
-    }
-    appleScript := appleScriptDetectBrowser[browser]
+    appleScript := appleScriptGetUrlFromCurrentBrowser
     b, err := exec.Command("osascript", "-s", "s", "-s", "o", "-e",
         appleScript).Output()
     if err != nil {
