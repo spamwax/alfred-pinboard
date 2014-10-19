@@ -114,14 +114,14 @@ func main() {
         Usage:       "Sets token and browser options",
         Description: "set Workflow related options.",
         Flags: []cli.Flag{
-            cli.StringFlag{"browser", "chrome", "Browser to fetch the webpage from"},
-            cli.StringFlag{"auth", "", "Set authorization token in form of username:token"},
-            cli.StringFlag{"fuzzy,f", "", "Enable fuzzy search"},
-            cli.StringFlag{"shared", "", "Set sharing/private status for posted bookmarks"},
-            cli.StringFlag{"tag-only-search", "", "Only search through tags when looking up bookmarks"},
-            cli.StringFlag{"auto-update", "no", "Automatically update bookmarks cache after posting a bookmark."},
-            cli.IntFlag{"max-tags", -1, "Set max. number of tags to show."},
-            cli.IntFlag{"max-bookmarks", -1, "Set max. number of bookmarks to show."},
+            cli.StringFlag{"browser", "chrome", "Browser to fetch the webpage from", ""},
+            cli.StringFlag{"auth", "", "Set authorization token in form of username:token", ""},
+            cli.StringFlag{"fuzzy,f", "", "Enable fuzzy search", ""},
+            cli.StringFlag{"shared", "", "Set sharing/private status for posted bookmarks", ""},
+            cli.StringFlag{"tag-only-search", "", "Only search through tags when looking up bookmarks", ""},
+            cli.StringFlag{"auto-update", "no", "Automatically update bookmarks cache after posting a bookmark.", ""},
+            cli.IntFlag{"max-tags", -1, "Set max. number of tags to show.", ""},
+            cli.IntFlag{"max-bookmarks", -1, "Set max. number of bookmarks to show.", ""},
         },
         Action: func(c *cli.Context) {
             // Set max number of tags/bookmarks to show
