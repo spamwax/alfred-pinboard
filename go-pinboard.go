@@ -1,6 +1,7 @@
 package main
 
 import (
+    "fmt"
     "net/url"
     "os"
     "os/exec"
@@ -107,11 +108,11 @@ func main() {
         Usage:       "Sets token and browser options",
         Description: "set Workflow related options.",
         Flags: []cli.Flag{
-            cli.StringFlag{ Name: "browser", Value: "chrome", Usage: "Browser to fetch the webpage from"},
-            cli.StringFlag{ Name: "auth", Value: "", Usage: "Set authorization token in form of username:token"},
-            cli.StringFlag{ Name: "fuzzy,f", Value: "", Usage: "Enable fuzzy search"},
-            cli.IntFlag{ Name: "max-tags", Value: -1, Usage: "Set max. number of tags to show."},
-            cli.IntFlag{ Name: "max-bookmarks", Value: -1, Usage: "Set max. number of bookmarks to show."},
+            cli.StringFlag{Name: "browser", Value: "chrome", Usage: "Browser to fetch the webpage from"},
+            cli.StringFlag{Name: "auth", Value: "", Usage: "Set authorization token in form of username:token"},
+            cli.StringFlag{Name: "fuzzy,f", Value: "", Usage: "Enable fuzzy search"},
+            cli.IntFlag{Name: "max-tags", Value: -1, Usage: "Set max. number of tags to show."},
+            cli.IntFlag{Name: "max-bookmarks", Value: -1, Usage: "Set max. number of bookmarks to show."},
         },
         Action: func(c *cli.Context) {
             // Set max number of tags/bookmarks to show
@@ -253,10 +254,13 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     // compiled applescript required to prevent starting of non-running browsers
     // (@see http://stackoverflow.com/a/16071855)
     b, err := exec.Command("osascript", "-s", "so", "get-current-url.scpt").Output()
+    // fmt.Printf("error> '%v'\n", err)
     if err != nil {
+        fmt.Println("%v", err)
         return nil, err
     }
     out := string(b)
+    // fmt.Printf("--> '%v'\n", out)
     foo0 := strings.Trim(out, "{}\n")
     foo1 := strings.Split(foo0, ",")
 

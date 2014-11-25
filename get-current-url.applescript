@@ -24,6 +24,12 @@ on run
 			end using terms from
 		end tell
 		
+	else if theApplication is "Chromium.app" and appIsRunning("Chromium") then
+		tell application "Chromium"
+			set theURL to URL of active tab of first window
+			set theText to title of active tab of first window
+		end tell
+		
 	else if theApplication is "Firefox.app" and appIsRunning("Firefox") then
 		tell application "Firefox"
 			activate
