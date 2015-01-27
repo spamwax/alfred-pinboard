@@ -150,7 +150,7 @@ func getTagsFor(q string, ga *Alfred.GoAlfred) (m sortedTags, err error) {
     // Sort based on descending order of tag freq
     sort.Sort(m)
     if !exact_match {
-        m = append(sortedTags{tagpair{name: q, count: 0}}, m...)
+        m = append(m, tagpair{name: q, count: 0})
     }
     return m, nil
 }

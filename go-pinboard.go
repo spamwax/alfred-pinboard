@@ -1,6 +1,7 @@
 package main
 
 import (
+    "fmt"
     "net/url"
     "os"
     "os/exec"
@@ -119,7 +120,7 @@ func main() {
             cli.StringFlag{Name: "fuzzy,f", Value: "", Usage: "Enable fuzzy search"},
             cli.StringFlag{Name: "shared", Value: "", Usage: "Set sharing/private status for posted bookmarks"},
             cli.StringFlag{Name: "tag-only-search", Value: "", Usage: "Only search through tags when looking up bookmarks"},
-            cli.StringFlag{Name: "auto-update", Value: "no", Usage: "Automatically update bookmarks cache after posting a bookmark."},
+            cli.StringFlag{Name: "auto-update", Value: "", Usage: "Automatically update bookmarks cache after posting a bookmark."},
             cli.IntFlag{Name: "max-tags", Value: -1, Usage: "Set max. number of tags to show."},
             cli.IntFlag{Name: "max-bookmarks", Value: -1, Usage: "Set max. number of bookmarks to show."},
         },
@@ -136,8 +137,9 @@ func main() {
                 os.Stdout.WriteString("Max no. bookmarks to show: " + mbook)
             }
             // Set browser
-            if b := c.String("browser"); b != "" {
+            if b := c.String("browser"); b != "chrome" {
                 ga.Set("browser", b)
+                os.Stdout.WriteString("Default browser: " + b)
             }
             // Set sharing/private status for bookmarks
             if s := c.String("shared"); s != "" {
@@ -152,6 +154,7 @@ func main() {
             // Set auto-update option
             if au := c.String("auto-update"); au != "" {
                 ga.Set("auto_update", au)
+                os.Stdout.WriteString("Cache auto update: " + au)
             }
             // Set authorization tokens
             if t := c.String("auth"); t != "" {
@@ -298,13 +301,16 @@ func buildRegExp(s string) (re *regexp.Regexp) {
 }
 
 func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
-    appleScript := appleScriptGetUrlFromCurrentBrowser
-    b, err := exec.Command("osascript", "-s", "s", "-s", "o", "-e",
-        appleScript).Output()
+    // compiled applescript required to prevent starting of non-running browsers
+    // (@see http://stackoverflow.com/a/16071855)
+    b, err := exec.Command("osascript", "-s", "so", "get-current-url.scpt").Output()
+    // fmt.Printf("error> '%v'\n", err)
     if err != nil {
+        fmt.Println("%v", err)
         return nil, err
     }
     out := string(b)
+    // fmt.Printf("--> '%v'\n", out)
     foo0 := strings.Trim(out, "{}\n")
     foo1 := strings.Split(foo0, ",")
 
@@ -320,92 +326,3 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
 
     return []string{pinURL, pinDesc}, err
 }
-
-var appleScriptDetectBrowser = map[string]string{
-    "safari": `on run
-        tell application "Safari"
-            set theURL to URL of current tab of window 1
-            set theDesc to name of current tab of window 1
-        end tell
-        return {theUrl, theDesc}
-        end run`,
-    "chrome": `on run
-            tell application "Google Chrome"
-                set theURL to URL of active tab of first window
-                set theDesc to title of active tab of first window
-            end tell
-            return {theURL, theDesc}
-            end run`,
-    "chromium": `on run
-            tell application "Chromium"
-                set theURL to URL of active tab of first window
-                set theDesc to title of active tab of first window
-            end tell
-            return {theURL, theDesc}
-            end run`,
-    "firefox": `on run
-            tell application "Firefox"
-                activate
-                set w to item 1 of window 1
-                set theDesc to name of w
-            end tell
-            tell application "System Events"
-                set myApp to name of first application process whose frontmost is true
-                if myApp is "Firefox" then
-                    tell application "System Events"
-                        keystroke "l" using command down
-                        delay 0.5
-                        keystroke "c" using command down
-                    end tell
-                    delay 0.5
-                end if
-                delay 0.5
-            end tell
-            set theURL to get the clipboard
-            return {theURL, theDesc}
-            end run`,
-}
-
-// get the url and title from the front most browser window (@see com.surrealroad.alfred-reminder by Jack James [http://www.surrealroad.com])
-var appleScriptGetUrlFromCurrentBrowser = `on run
-    set theApplication to (name of (info for (path to frontmost application)))
-    set theText to ""
-    set theURL to ""
-
-    if theApplication is "Google Chrome.app" then
-        tell application id "com.google.chrome"
-            using terms from application "Google Chrome"
-                set theText to title of active tab of first window
-                set theURL to get URL of active tab of first window
-            end using terms from
-        end tell
-    else if theApplication is "Safari.app" then
-        tell application id "com.apple.safari"
-            using terms from application "Safari"
-                set theTab to front document
-                set theText to name of theTab
-                set theURL to URL of theTab
-            end using terms from
-        end tell
-    else if theApplication is "Firefox.app" then
-        tell application "Firefox"
-            activate
-            set w to item 1 of window 1
-            set theDesc to name of w
-        end tell
-        tell application "System Events"
-            set myApp to name of first application process whose frontmost is true
-            if myApp is "Firefox" then
-                tell application "System Events"
-                    keystroke "l" using command down
-                    delay 0.5
-                    keystroke "c" using command down
-                end tell
-                delay 0.5
-            end if
-            delay 0.5
-        end tell
-        set theURL to get the clipboard
-    end if
-    return {theURL, theText}
-end run`
