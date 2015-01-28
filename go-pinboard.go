@@ -112,10 +112,9 @@ func main() {
     }
     setOptions := cli.Command{
         Name:        "setoptions",
-        Usage:       "Sets token and browser options",
+        Usage:       "Sets token and other options",
         Description: "set Workflow related options.",
         Flags: []cli.Flag{
-            cli.StringFlag{Name: "browser", Value: "chrome", Usage: "Browser to fetch the webpage from"},
             cli.StringFlag{Name: "auth", Value: "", Usage: "Set authorization token in form of username:token"},
             cli.StringFlag{Name: "fuzzy,f", Value: "", Usage: "Enable fuzzy search"},
             cli.StringFlag{Name: "shared", Value: "", Usage: "Set sharing/private status for posted bookmarks"},
@@ -135,11 +134,6 @@ func main() {
                 mbook := strconv.Itoa(mb)
                 ga.Set("max_bookmarks", mbook)
                 os.Stdout.WriteString("Max no. bookmarks to show: " + mbook)
-            }
-            // Set browser
-            if b := c.String("browser"); b != "chrome" {
-                ga.Set("browser", b)
-                os.Stdout.WriteString("Default browser: " + b)
             }
             // Set sharing/private status for bookmarks
             if s := c.String("shared"); s != "" {
@@ -188,7 +182,7 @@ func main() {
     postBookmark := cli.Command{
         Name:        "post",
         Usage:       "post tag1 tag2 ; extra notes",
-        Description: "Posts a bookmark to cloud for the current page of the browser.",
+        Description: "Posts a bookmark to cloud for the current page of the active browser.",
         Action: func(c *cli.Context) {
             query := strings.Join(c.Args(), " ")
             binfo, err := postToCloud(query, ga)
@@ -237,7 +231,6 @@ func main() {
 }
 
 func showSettings(ga *Alfred.GoAlfred) {
-    browser, _ := ga.Get("browser")
     max_tags, _ := ga.Get("max_tags")
     max_bookmarks, _ := ga.Get("max_bookmarks")
     fuzzy_search, _ := ga.Get("fuzzy_search")
@@ -245,9 +238,6 @@ func showSettings(ga *Alfred.GoAlfred) {
     shared, _ := ga.Get("shared")
 
     // ga.AddItem(uid, title, subtitle, valid, auto, rtype, arg, icon, check_valid)
-    ga.AddItem("", "Browser: "+browser, "Browser to use.", "yes", "", "",
-        "pset browser",
-        Alfred.NewIcon("ACD33B7C-7C31-47F4-B8AC-E15E09EC31DD.png", ""), false)
 
     ga.AddItem("", "No. Tags: "+max_tags, "No. of tags to show.", "yes", "",
         "", "pset tags", Alfred.NewIcon("tag_icon.icns", ""), false)

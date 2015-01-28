@@ -1,0 +1,1129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>cc.hamid.gopinboard</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>connections</key>
+	<dict>
+		<key>0087168E-C986-4511-9873-B107C12CD6C0</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6BA4C470-B64F-4BE2-9346-38ADACABCCBA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>00892451-3E5D-421F-B3ED-367DD1560720</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>0087168E-C986-4511-9873-B107C12CD6C0</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>03AF5169-B606-486F-B432-98CF6E2BB0F2</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7D04FF13-FCCF-4B11-823D-ACBBAEA01292</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>18F784B1-22B6-4B84-82B1-E12A5F1417FC</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>65031F83-A8C5-4CD1-A238-B666EEF49939</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>2DFDAFE5-6A0E-4E95-A1C5-30789A06C27C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7D0D3480-DBAF-4261-B304-169C58BDA745</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>3CFEFF60-C0B3-44A0-8761-FB5AA2F96547</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>ACED2549-3532-4ECC-9709-96679199529D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>59CC5D01-8A21-4819-BCBD-A02BF648DCD1</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>EC790D90-4A99-492B-ADFB-7EB4E303C7CB</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>5D065041-109B-41B0-ADE0-62CA836178E5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6A4A2D1D-0087-4112-8D83-7BD1C4886CBB</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>65031F83-A8C5-4CD1-A238-B666EEF49939</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>4F9F37FF-172A-430F-AB3C-521CCDCBCABA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>6A4A2D1D-0087-4112-8D83-7BD1C4886CBB</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6BA4C470-B64F-4BE2-9346-38ADACABCCBA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>7A213534-8342-46AB-A4EA-4CCF95685833</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>E27BB22A-56EB-4D38-9725-99555F0EB6D1</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>7D04FF13-FCCF-4B11-823D-ACBBAEA01292</key>
+		<array/>
+		<key>7D0D3480-DBAF-4261-B304-169C58BDA745</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5D22F26C-5A6A-4D18-B1F9-1158B8075764</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>8FBE3EBB-9672-493C-977C-95B832412F2E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C79DF9E2-8026-4F82-B31C-BCD0D4AFCE20</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>93A64ECE-BB64-492B-B845-7CB85B544D40</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A156743D-A9BB-4AFB-A0C2-D16EF45F7DD0</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>A156743D-A9BB-4AFB-A0C2-D16EF45F7DD0</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5D22F26C-5A6A-4D18-B1F9-1158B8075764</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>A1AB9903-87A7-4041-8EB9-F9E9C06C451B</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>59CC5D01-8A21-4819-BCBD-A02BF648DCD1</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>A8EE818C-427B-476F-93FD-02825231464B</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>DA27F20C-DD88-4FCB-A665-CD66BFF2761D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>ACED2549-3532-4ECC-9709-96679199529D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5D22F26C-5A6A-4D18-B1F9-1158B8075764</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>C79DF9E2-8026-4F82-B31C-BCD0D4AFCE20</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6BA4C470-B64F-4BE2-9346-38ADACABCCBA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>D5939049-C73A-4872-9625-87A9F9BE886C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>453D2BA7-92D6-4AD0-821B-132AF0365147</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>DA27F20C-DD88-4FCB-A665-CD66BFF2761D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6BA4C470-B64F-4BE2-9346-38ADACABCCBA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>E27BB22A-56EB-4D38-9725-99555F0EB6D1</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5D22F26C-5A6A-4D18-B1F9-1158B8075764</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Hamid Ghadyani</string>
+	<key>description</key>
+	<string>Add &amp; search your Pinboards bookmarks.</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Pinboard Workflow</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>Successfully posted {query}</string>
+				<key>title</key>
+				<string>GoPinboard</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>EC790D90-4A99-492B-ADFB-7EB4E303C7CB</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>126</integer>
+				<key>script</key>
+				<string>./go-pinboard post {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>59CC5D01-8A21-4819-BCBD-A02BF648DCD1</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>62</integer>
+				<key>keyword</key>
+				<string>p</string>
+				<key>runningsubtext</key>
+				<string>...</string>
+				<key>script</key>
+				<string>./go-pinboard showtags {query}
+#./albook show-tags query="{query}"</string>
+				<key>subtext</key>
+				<string>Post current browser's page to Pinboard</string>
+				<key>title</key>
+				<string>Go Pinboard</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>A1AB9903-87A7-4041-8EB9-F9E9C06C451B</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>pa</string>
+				<key>subtext</key>
+				<string>pa username:token</string>
+				<key>text</key>
+				<string>Set Pinboard's Authorization Token</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>00892451-3E5D-421F-B3ED-367DD1560720</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>./go-pinboard setoptions --auth {query}
+
+# IFS=':' read -ra ADDR &lt;&lt;&lt; "{query}"
+# ./albook set-options username=${ADDR[0]} access_token=${ADDR[1]} service=pinboard
+# echo "Set access token for ${ADDR[0]}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>0087168E-C986-4511-9873-B107C12CD6C0</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Pinboard</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>6BA4C470-B64F-4BE2-9346-38ADACABCCBA</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>pset fuzzy</string>
+				<key>script</key>
+				<string>cat &lt;&lt; EOB
+
+&lt;?xml version="1.0"?&gt;
+
+&lt;items&gt;
+  &lt;item uid="" arg="yes" valid="YES" autocomplete="Yes"&gt;
+    &lt;title&gt;Enable Fuzzy Search&lt;/title&gt;
+	&lt;icon&gt;fuzzy_search.icns&lt;/icon&gt;
+  &lt;/item&gt;
+
+  &lt;item uid="" arg="no" valid="YES" autocomplete="No"&gt;
+    &lt;title&gt;Disable Fuzzy Search&lt;/title&gt;
+	&lt;icon&gt;non_fuzzy_search.icns&lt;/icon&gt;
+  &lt;/item&gt;
+&lt;/items&gt;
+
+EOB</string>
+				<key>subtext</key>
+				<string>Enable/Disable fuzzy logic search</string>
+				<key>title</key>
+				<string>fuzzy</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>5D065041-109B-41B0-ADE0-62CA836178E5</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>./go-pinboard setoptions --fuzzy {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>6A4A2D1D-0087-4112-8D83-7BD1C4886CBB</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>Changed default browser to {query}</string>
+				<key>title</key>
+				<string>Pinboard</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>4F9F37FF-172A-430F-AB3C-521CCDCBCABA</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>pset browser</string>
+				<key>script</key>
+				<string>cat &lt;&lt; EOB
+
+&lt;?xml version="1.0"?&gt;
+
+&lt;items&gt;
+  &lt;item uid="chrome" arg="chrome" valid="YES"&gt;
+    &lt;title&gt;Google Chrome&lt;/title&gt;
+	&lt;icon&gt;chrome.icns&lt;/icon&gt;
+  &lt;/item&gt;
+
+  &lt;item uid="safari" arg="safari" valid="YES"&gt;
+    &lt;title&gt;Safari&lt;/title&gt;
+	&lt;icon&gt;safari.icns&lt;/icon&gt;
+  &lt;/item&gt;
+
+  &lt;item uid="chromium" arg="chromium" valid="YES"&gt;
+    &lt;title&gt;Chromium&lt;/title&gt;
+	&lt;icon&gt;chromium.icns&lt;/icon&gt;
+  &lt;/item&gt;
+
+  &lt;item uid="firefox" arg="firefox" valid="YES"&gt;
+    &lt;title&gt;Firefox&lt;/title&gt;
+	&lt;icon&gt;firefox.png&lt;/icon&gt;
+  &lt;/item&gt;
+
+&lt;/items&gt;
+
+EOB</string>
+				<key>subtext</key>
+				<string>Set Default Browser to Use for Pinboard Workflow</string>
+				<key>title</key>
+				<string>browser</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>18F784B1-22B6-4B84-82B1-E12A5F1417FC</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>./go-pinboard setoptions --browser {query}
+a={query}
+b=`echo -n "${a:0:1}" | tr "[:lower:]" "[:upper:]"`
+echo -n "${b}${a:1}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>65031F83-A8C5-4CD1-A238-B666EEF49939</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>pset tags</string>
+				<key>subtext</key>
+				<string>Set max. no. of tags to show.</string>
+				<key>text</key>
+				<string>tags</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>8FBE3EBB-9672-493C-977C-95B832412F2E</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>./go-pinboard setoptions --max-tags {query}
+# ./albook set-options tags_max={query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>C79DF9E2-8026-4F82-B31C-BCD0D4AFCE20</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>pset bmarks</string>
+				<key>subtext</key>
+				<string>Set max. no. of bookmarks to show.</string>
+				<key>text</key>
+				<string>bmarks</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>A8EE818C-427B-476F-93FD-02825231464B</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>./go-pinboard setoptions --max-bookmarks {query}
+# ./albook set-options bookmarks_max={query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>DA27F20C-DD88-4FCB-A665-CD66BFF2761D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>62</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "{query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>453D2BA7-92D6-4AD0-821B-132AF0365147</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>keyword</key>
+				<string>pset show</string>
+				<key>script</key>
+				<string>./go-pinboard showsettings
+#./albook show-options</string>
+				<key>subtext</key>
+				<string>Show Pinboard's Settings</string>
+				<key>title</key>
+				<string>show</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>D5939049-C73A-4872-9625-87A9F9BE886C</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>ret=$(./go-pinboard update)
+echo $ret
+# ./albook update-cache</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>7D0D3480-DBAF-4261-B304-169C58BDA745</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Pinboard</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>5D22F26C-5A6A-4D18-B1F9-1158B8075764</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>pu</string>
+				<key>subtext</key>
+				<string>Run this to fetch latest changes from your pinboard account</string>
+				<key>text</key>
+				<string>Update Pinboard's Cache</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>2DFDAFE5-6A0E-4E95-A1C5-30789A06C27C</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>126</integer>
+				<key>keyword</key>
+				<string>ps</string>
+				<key>runningsubtext</key>
+				<string>searching...</string>
+				<key>script</key>
+				<string>./go-pinboard showbookmarks {query}
+#./albook show-bookmarks query="{query}"</string>
+				<key>subtext</key>
+				<string>ps keyword1 keyword2 ...</string>
+				<key>title</key>
+				<string>Search your Pinboard bookmarks</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>03AF5169-B606-486F-B432-98CF6E2BB0F2</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<false/>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>7D04FF13-FCCF-4B11-823D-ACBBAEA01292</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>pset tagonly</string>
+				<key>script</key>
+				<string>cat &lt;&lt; EOB
+
+&lt;?xml version="1.0"?&gt;
+
+&lt;items&gt;
+  &lt;item uid="tagonly" arg="yes" valid="YES" autocomplete="Yes"&gt;
+    &lt;title&gt;Search only tags&lt;/title&gt;
+	&lt;icon&gt;tag_icon.icns&lt;/icon&gt;
+  &lt;/item&gt;
+
+  &lt;item uid="des" arg="no" valid="YES" autocomplete="No"&gt;
+    &lt;title&gt;Search tags/titles/notes/url&lt;/title&gt;
+	&lt;icon&gt;info.icns&lt;/icon&gt;
+  &lt;/item&gt;
+&lt;/items&gt;
+
+EOB</string>
+				<key>subtext</key>
+				<string>Only search tags?</string>
+				<key>title</key>
+				<string>tag-only</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>3CFEFF60-C0B3-44A0-8761-FB5AA2F96547</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>123</integer>
+				<key>script</key>
+				<string>./go-pinboard setoptions --tag-only-search {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>ACED2549-3532-4ECC-9709-96679199529D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>./go-pinboard setoptions --shared {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>A156743D-A9BB-4AFB-A0C2-D16EF45F7DD0</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>pset shared</string>
+				<key>script</key>
+				<string>cat &lt;&lt; EOB
+
+&lt;?xml version="1.0"?&gt;
+
+&lt;items&gt;
+  &lt;item uid="" arg="yes" valid="YES"&gt;
+    &lt;title&gt;Enable Shared Bookmarking&lt;/title&gt;
+	&lt;icon&gt;unlocked.png&lt;/icon&gt;
+  &lt;/item&gt;
+
+  &lt;item uid="" arg="no" valid="YES"&gt;
+    &lt;title&gt;Enable Private Bookmarking&lt;/title&gt;
+	&lt;icon&gt;locked.png&lt;/icon&gt;
+  &lt;/item&gt;
+&lt;/items&gt;
+
+EOB</string>
+				<key>subtext</key>
+				<string>Shared/Private Bookmarking</string>
+				<key>title</key>
+				<string>shared</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>93A64ECE-BB64-492B-B845-7CB85B544D40</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>pset auto</string>
+				<key>script</key>
+				<string>cat &lt;&lt; EOB
+
+&lt;?xml version="1.0"?&gt;
+
+&lt;items&gt;
+  &lt;item uid="" arg="yes" valid="YES"&gt;
+    &lt;title&gt;Enable Auto-updating cache&lt;/title&gt;
+	&lt;icon&gt;auto_update.png&lt;/icon&gt;
+  &lt;/item&gt;
+
+  &lt;item uid="" arg="no" valid="YES"&gt;
+    &lt;title&gt;Disable Auto-updating cache&lt;/title&gt;
+	&lt;icon&gt;auto_update.png&lt;/icon&gt;
+  &lt;/item&gt;
+&lt;/items&gt;
+
+EOB</string>
+				<key>subtext</key>
+				<string>Automatically update bookmarks cache after posting a bookmark</string>
+				<key>title</key>
+				<string>auto</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>7A213534-8342-46AB-A4EA-4CCF95685833</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>./go-pinboard setoptions --auto-update {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>E27BB22A-56EB-4D38-9725-99555F0EB6D1</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>This is another Workflow to manage your Pinboard bookmarks.
+I mainly wrote this so I can learn/practice Go (golang).</string>
+	<key>uidata</key>
+	<dict>
+		<key>0087168E-C986-4511-9873-B107C12CD6C0</key>
+		<dict>
+			<key>ypos</key>
+			<real>150</real>
+		</dict>
+		<key>00892451-3E5D-421F-B3ED-367DD1560720</key>
+		<dict>
+			<key>ypos</key>
+			<real>150</real>
+		</dict>
+		<key>03AF5169-B606-486F-B432-98CF6E2BB0F2</key>
+		<dict>
+			<key>ypos</key>
+			<real>980</real>
+		</dict>
+		<key>18F784B1-22B6-4B84-82B1-E12A5F1417FC</key>
+		<dict>
+			<key>ypos</key>
+			<real>400</real>
+		</dict>
+		<key>2DFDAFE5-6A0E-4E95-A1C5-30789A06C27C</key>
+		<dict>
+			<key>ypos</key>
+			<real>850</real>
+		</dict>
+		<key>3CFEFF60-C0B3-44A0-8761-FB5AA2F96547</key>
+		<dict>
+			<key>ypos</key>
+			<real>1130</real>
+		</dict>
+		<key>453D2BA7-92D6-4AD0-821B-132AF0365147</key>
+		<dict>
+			<key>ypos</key>
+			<real>700</real>
+		</dict>
+		<key>4F9F37FF-172A-430F-AB3C-521CCDCBCABA</key>
+		<dict>
+			<key>ypos</key>
+			<real>400</real>
+		</dict>
+		<key>59CC5D01-8A21-4819-BCBD-A02BF648DCD1</key>
+		<dict>
+			<key>ypos</key>
+			<real>20</real>
+		</dict>
+		<key>5D065041-109B-41B0-ADE0-62CA836178E5</key>
+		<dict>
+			<key>ypos</key>
+			<real>300</real>
+		</dict>
+		<key>5D22F26C-5A6A-4D18-B1F9-1158B8075764</key>
+		<dict>
+			<key>ypos</key>
+			<real>850</real>
+		</dict>
+		<key>65031F83-A8C5-4CD1-A238-B666EEF49939</key>
+		<dict>
+			<key>ypos</key>
+			<real>400</real>
+		</dict>
+		<key>6A4A2D1D-0087-4112-8D83-7BD1C4886CBB</key>
+		<dict>
+			<key>ypos</key>
+			<real>300</real>
+		</dict>
+		<key>6BA4C470-B64F-4BE2-9346-38ADACABCCBA</key>
+		<dict>
+			<key>ypos</key>
+			<real>150</real>
+		</dict>
+		<key>7A213534-8342-46AB-A4EA-4CCF95685833</key>
+		<dict>
+			<key>ypos</key>
+			<real>1330</real>
+		</dict>
+		<key>7D04FF13-FCCF-4B11-823D-ACBBAEA01292</key>
+		<dict>
+			<key>ypos</key>
+			<real>980</real>
+		</dict>
+		<key>7D0D3480-DBAF-4261-B304-169C58BDA745</key>
+		<dict>
+			<key>ypos</key>
+			<real>850</real>
+		</dict>
+		<key>8FBE3EBB-9672-493C-977C-95B832412F2E</key>
+		<dict>
+			<key>ypos</key>
+			<real>500</real>
+		</dict>
+		<key>93A64ECE-BB64-492B-B845-7CB85B544D40</key>
+		<dict>
+			<key>ypos</key>
+			<real>1230</real>
+		</dict>
+		<key>A156743D-A9BB-4AFB-A0C2-D16EF45F7DD0</key>
+		<dict>
+			<key>ypos</key>
+			<real>1230</real>
+		</dict>
+		<key>A1AB9903-87A7-4041-8EB9-F9E9C06C451B</key>
+		<dict>
+			<key>ypos</key>
+			<real>20</real>
+		</dict>
+		<key>A8EE818C-427B-476F-93FD-02825231464B</key>
+		<dict>
+			<key>ypos</key>
+			<real>600</real>
+		</dict>
+		<key>ACED2549-3532-4ECC-9709-96679199529D</key>
+		<dict>
+			<key>ypos</key>
+			<real>1130</real>
+		</dict>
+		<key>C79DF9E2-8026-4F82-B31C-BCD0D4AFCE20</key>
+		<dict>
+			<key>ypos</key>
+			<real>500</real>
+		</dict>
+		<key>D5939049-C73A-4872-9625-87A9F9BE886C</key>
+		<dict>
+			<key>ypos</key>
+			<real>700</real>
+		</dict>
+		<key>DA27F20C-DD88-4FCB-A665-CD66BFF2761D</key>
+		<dict>
+			<key>ypos</key>
+			<real>600</real>
+		</dict>
+		<key>E27BB22A-56EB-4D38-9725-99555F0EB6D1</key>
+		<dict>
+			<key>ypos</key>
+			<real>1330</real>
+		</dict>
+		<key>EC790D90-4A99-492B-ADFB-7EB4E303C7CB</key>
+		<dict>
+			<key>ypos</key>
+			<real>20</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>https://bitbucket.org/listboss/go-pinboard/wiki/Home</string>
+</dict>
+</plist>
