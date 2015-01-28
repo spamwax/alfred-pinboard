@@ -301,9 +301,10 @@ func buildRegExp(s string) (re *regexp.Regexp) {
 }
 
 func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
-    // compiled applescript required to prevent starting of non-running browsers
-    // (@see http://stackoverflow.com/a/16071855)
-    b, err := exec.Command("osascript", "-s", "so", "get-current-url.scpt").Output()
+    // Use external applescript and some tricky hacks to prevent non-running browsers
+    // from being startet when posting a new url to pinboard
+    // @see http://stackoverflow.com/a/16071855
+    b, err := exec.Command("osascript", "-s", "so", "get-current-url.applescript").Output()
     // fmt.Printf("error> '%v'\n", err)
     if err != nil {
         fmt.Println("%v", err)
