@@ -2,6 +2,7 @@ on appIsRunning(appName)
 	tell application "System Events" to (name of processes) contains appName
 end appIsRunning
 
+
 on run
 	set theApplication to (name of (info for (path to frontmost application)))
 	set theText to ""
@@ -40,7 +41,7 @@ on run
 		set theText to item 2 of theResult
 		
 	else if theApplication is "Firefox.app" and appIsRunning("Firefox") then
-		set theResult to run script "tell application \"Firefox\"
+		set theResult to run script "tell application id \"org.mozilla.firefox\"
 			activate
 			set w to item 1 of window 1
 			set theText to name of w
