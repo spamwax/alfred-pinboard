@@ -13,7 +13,13 @@ This plugin will let you:
 - _**post**_ a bookmark to Pinboard right from Alfred. It has 'tag' autocomplete feature that will help you in selecting proper tags for the bookmark.
 - _**search**_ your current bookmarks
 
-For posting you just need to enter the Workflow's keyword ( <kbd>p</kbd> ) into Alfred's window and follow it with couple of tags and an optional description. The workflow will then post a bookmark for the current active window of your favorite browser to Pinboard.
+For posting you just need to enter the Workflow's keyword ( <kbd>p</kbd> ) into Alfred's window and follow it with couple of tags and an optional description. The workflow will then post a bookmark for the window/tab of the active browser to Pinboard.
+
+### Supported Browsers:
+- Chrome
+- Chromium
+- Firefox
+- Safari
 
 For searching, use ( <kbd>ps</kbd> ) and then type the search keywords.
 
@@ -66,10 +72,6 @@ The search result is ordered in descending order of dates they were posted to yo
 ![image](https://bitbucket.org/listboss/go-pinboard/wiki/bookmarks-search-results.png)
 
 ## Additional Settings
-- The default browser that this workflow uses is Chrome, you can change it to Safari using
-```pset browser``` and then select one of the supported browsers.
-
-![image](https://bitbucket.org/listboss/go-pinboard/wiki/set-browser.png)
 
 - To enable/disable fuzzy search of tags/bookmarks, use:
 ```pset fuzzy``` and then select one of the options.
@@ -87,14 +89,14 @@ When fuzzy search is enabled, the tags/bookmarks that contain the query letters 
 
 - To enable/disable sharing the bookmarks, use:
 	- ```pset shared```
-	
+
 	![image](https://bitbucket.org/listboss/go-pinboard/wiki/shared.png)
-	
+
 - To enadle/disable auto-updating of the cache that this workflow uses for searching, use the following. Note that by enabling the auto-update, workflow will fetch all your bookmarks from Pinboard after every new bookmark you create using it:
 	- ```pset auto```
-	
+
 	![image](https://bitbucket.org/listboss/go-pinboard/wiki/auto_update.png)
-	
+
 
 - You can set the max. number of tags or bookmarks that you want to be displayed using these two keywords:
 	- ```pset tags```
