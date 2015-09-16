@@ -303,7 +303,7 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     out := string(b)
     // fmt.Printf("--> '%v'\n", out)
     foo0 := strings.Trim(out, "{}\n")
-    foo1 := strings.Split(foo0, ",")
+    foo1 := strings.Split(foo0, "@@@@@")
 
     pinURL := strings.Trim(foo1[0], "\" ")
     pinDesc := ""
