@@ -268,7 +268,8 @@ func showSettings(ga *Alfred.GoAlfred) {
 func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {
     u := url.URL{}
     u.Scheme = hostURLScheme
-    u.Host = path.Join(hostURLPinboard, pathURL)
+    u.Host = hostURLPinboard  // path.Join(hostURLPinboard, pathURL)
+    u.Path = pathURL
     q := u.Query()
     q.Set("url", payload.url)
     q.Set("description", payload.description)

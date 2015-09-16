@@ -40,7 +40,7 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (info []string, err error) {
 
     payload.auth_token = oauth
 
-    urlReq := encodeURL(payload, "/v1/posts/add")
+    urlReq := encodeURL(payload, "v1/posts/add")
     err = postToPinboard(urlReq)
 
     return pinInfo, err
