@@ -2,7 +2,10 @@ TODO:
  ☐ Finish the TODOs within the source code
     ☐ showing the current page of browser if it's already marked
     ☐ showing pulic popular tags
+    ☐ Do not use the highlighted suggested tag if user has typed a space after the tag query.
+    ☐ Always show 'NEW TAG'. Right now if the suggested tag list is more than limit set by user, the 'NEW TAG' item will not be shown.
  ☐ Make Pinboard's function a separate pkg
+ ☐ Use alfred's actions to show the tags used on a bookmark shown through search results.
  ☐ Add support for Delicious
  ✔ Add a feature to show the current settings of the workflow in Alfred @done (13-12-16 01:46)
  ✔ sort the tags based on number of usage. @today @done (13-12-15 06:20)
