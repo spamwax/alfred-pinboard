@@ -10,7 +10,6 @@ import (
     "net/http"
     "net/url"
     "os"
-    "path"
     "strings"
     "time"
 
@@ -89,7 +88,7 @@ func update_tags_cache(ga *Alfred.GoAlfred) (err error) {
 }
 
 func updatePostsCache(ga *Alfred.GoAlfred) error {
-    u, err := makeURLWithAuth(ga, "/v1/posts/all")
+    u, err := makeURLWithAuth(ga, "v1/posts/all")
     if err != nil {
         return err
     }
@@ -199,7 +198,8 @@ func fetchDataFromHttp(u url.URL) ([]byte, error) {
 func makeURLWithAuth(ga *Alfred.GoAlfred, pathURL string) (url.URL, error) {
     u := url.URL{}
     u.Scheme = hostURLScheme
-    u.Host = path.Join(hostURLPinboard, pathURL)
+    u.Host = hostURLPinboard  // path.Join(hostURLPinboard, pathURL)
+    u.Path = pathURL
     q := u.Query()
 
     auth_token, err := ga.Get("oauth")

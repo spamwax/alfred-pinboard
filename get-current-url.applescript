@@ -7,7 +7,7 @@ on run
 	set theApplication to (name of (info for (path to frontmost application)))
 	set theText to ""
 	set theURL to ""
-	
+
 	if theApplication is "Google Chrome.app" and appIsRunning("Google Chrome") then
 		set theResult to run script "tell application id \"com.google.chrome\"
 			using terms from application \"Google Chrome\"
@@ -18,7 +18,18 @@ on run
 		end tell"
 		set theURL to item 1 of theResult
 		set theText to item 2 of theResult
-		
+
+    else if theApplication is "Vivaldi.app" and appIsRunning("Vivaldi") then
+        set theResult to run script "tell application id \"com.vivaldi.Vivaldi\"
+            using terms from application \"Vivaldi\"
+                set theText to title of active tab of first window
+                set theURL to get URL of active tab of first window
+                return {theURL, theText}
+            end using terms from
+        end tell"
+        set theURL to item 1 of theResult
+        set theText to item 2 of theResult
+
 	else if theApplication is "Safari.app" and appIsRunning("Safari") then
 		set theResult to run script "tell application id \"com.apple.safari\"
 			using terms from application \"Safari\"
@@ -30,7 +41,7 @@ on run
 		end tell"
 		set theURL to item 1 of theResult
 		set theText to item 2 of theResult
-		
+
 	else if theApplication is "Chromium.app" and appIsRunning("Chromium") then
 		set theResult to run script "tell application \"Chromium\"
 			set theURL to URL of active tab of first window
@@ -39,7 +50,7 @@ on run
 		end tell"
 		set theURL to item 1 of theResult
 		set theText to item 2 of theResult
-		
+
 	else if theApplication is "Firefox.app" and appIsRunning("Firefox") then
 		set theResult to run script "tell application id \"org.mozilla.firefox\"
 			activate
@@ -62,9 +73,9 @@ on run
 		return {theURL, theText}"
 		set theURL to item 1 of theResult
 		set theText to item 2 of theResult
-		
+
 	end if
-	
-	return {theURL, theText}
-	
+
+	return {theURL & " @@@@@ " & theText}
+
 end run

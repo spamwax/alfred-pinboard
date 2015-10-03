@@ -268,7 +268,8 @@ func showSettings(ga *Alfred.GoAlfred) {
 func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {
     u := url.URL{}
     u.Scheme = hostURLScheme
-    u.Host = path.Join(hostURLPinboard, pathURL)
+    u.Host = hostURLPinboard  // path.Join(hostURLPinboard, pathURL)
+    u.Path = pathURL
     q := u.Query()
     q.Set("url", payload.url)
     q.Set("description", payload.description)
@@ -303,7 +304,7 @@ func getBrowserInfo(ga *Alfred.GoAlfred) (pinInfo []string, err error) {
     out := string(b)
     // fmt.Printf("--> '%v'\n", out)
     foo0 := strings.Trim(out, "{}\n")
-    foo1 := strings.Split(foo0, ",")
+    foo1 := strings.Split(foo0, "@@@@@")
 
     pinURL := strings.Trim(foo1[0], "\" ")
     pinDesc := ""
