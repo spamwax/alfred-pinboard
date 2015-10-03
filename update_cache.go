@@ -167,6 +167,24 @@ func updateNeeded(ga *Alfred.GoAlfred) (flag bool, err error) {
         last_update = "0001-01-01T23:00:00Z"
     }
 
+    // missing tags cache file
+    tags_cache_fn, err := ga.Get("tags_cache_fn")
+    if err != nil {
+        return false, err
+    }
+    if _, err := os.Stat(tags_cache_fn); os.IsNotExist(err) {
+        return true, nil
+    }
+
+    // missing posts cache file
+    posts_cache_fn, err := ga.Get("posts_cache_fn")
+    if err != nil {
+        return false, err
+    }
+    if _, err := os.Stat(posts_cache_fn); os.IsNotExist(err) {
+        return true, nil
+    }
+
     if lastTime, err = time.Parse(time.RFC3339Nano, last_update); err != nil {
         return false, err
     }
