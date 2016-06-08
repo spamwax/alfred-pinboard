@@ -41,6 +41,16 @@ on run
     end tell"
     set theURL to item 1 of theResult
     set theText to item 2 of theResult
+
+  else if theApplication is "Safari Technology Preview.app" and appIsRunning("Safari Technology Preview") then
+    set theResult to run script "tell application id \"com.apple.SafariTechnologyPreview\"
+      set theTab to front document
+      set theText to name of theTab
+      set theURL to URL of theTab
+      return {theURL, theText}
+    end tell"
+    set theURL to item 1 of theResult
+    set theText to item 2 of theResult
     
   else if theApplication is "Chromium.app" and appIsRunning("Chromium") then
     set theResult to run script "tell application \"Chromium\"
