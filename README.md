@@ -123,7 +123,7 @@ I wish to add the following in the coming releases:
 
 - ~~Add capability to search the bookmark within Alfred~~
 - Add popular (public) tags to the tag suggestion list.
-- Add support for [Delicious](https://delicious.com/) API.
+- ~~Add support for [Delicious](https://delicious.com/) API.~~ (Pinboard bought Deliciout and closed it off! :relieved:)
 
 
 ## Feedback / Bugs
