@@ -38,7 +38,7 @@ type Link struct {
 	Notes   string    `xml:"extended,attr"`
 	Time    time.Time `xml:"time,attr"`
 	Hash    string    `xml:"hash,attr"`
-	Shared  bool      `xml:"shared,attr"`
+	Shared  string    `xml:"shared,attr"`
 	Tags    string    `xml:"tag,attr"`
 	Meta    string    `xml:"meta,attr"`
 }
