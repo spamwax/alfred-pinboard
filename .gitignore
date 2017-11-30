@@ -2,3 +2,4 @@ go-pinboard
 *.sublime-project
 *.sublime-workspace
 *.tags*
+alfred-pinboard
