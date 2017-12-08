@@ -6,7 +6,7 @@ There are probably similar [Alfred](http://www.alfredapp.com/) Workflows out the
 
 ## Features
 Pinboard is a great and reliable bookmarking service. Its [front page](https://pinboard.in) sums it all:
-"***Social Bookmarking for Introverts. Pinboard is a fast, no-nonsense bookmarking site.***"
+"**Social Bookmarking for Introverts. Pinboard is a fast, no-nonsense bookmarking site.**"
 
 This plugin will let you:
 
