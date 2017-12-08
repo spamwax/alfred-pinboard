@@ -20,6 +20,9 @@ For posting you just need to enter the Workflow's keyword ( <kbd>p</kbd> ) into 
 - Chromium
 - Firefox
 - Safari
+- Vivaldi
+- Firefox Dev. Edition
+- Safari Tech. Preview
 
 For searching, use ( <kbd>ps</kbd> ) and then type the search keywords.
 
@@ -57,6 +60,11 @@ To finish the process just press Enter.
 If you want to add extra description to the bookmark you can add it after the semi-colon:
 
 ![image](https://bitbucket.org/listboss/go-pinboard/wiki/adding-notes.png)
+
+**Extra:** Adding *toread* anywhere after semi-colon will set the `toread` flag on bookmark.
+
+![toread](https://bitbucket.org/repo/4RyXyx/images/651058289-Screen%20Shot%202017-12-08%20at%203.24.22%20AM.png)
+
 
 ## Usage (search bookmarks):
 Searching your bookmarks is easy.
