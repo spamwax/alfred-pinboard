@@ -27,7 +27,7 @@ For posting you just need to enter the Workflow's keyword ( <kbd>p</kbd> ) into 
 For searching, use ( <kbd>ps</kbd> ) and then type the search keywords.
 
 ## Installation
-After [downloading](https://bitbucket.org/listboss/go-pinboard/downloads) the latest version of the workflow and installing it in Alfred, you need to do a one-time setup to authenticate the Workflow. This Workflow only uses username/token method so you won't need to enter your password. (This is the *suggested* way of using Pinboard's API).
+After [downloading](https://github.com/spamwax/alfred-pinboard/releases/latest) the latest version of the workflow and installing it in Alfred, you need to do a one-time setup to authenticate the Workflow. This Workflow only uses username/token method so you won't need to enter your password. (This is the *suggested* way of using Pinboard's API).
 If you don't have a token, get one from Pinbaord's [settings page](https://pinboard.in/settings/password).
 
 Then invoke Alfred and enter your username:token after the ***"pa"*** keyword:
