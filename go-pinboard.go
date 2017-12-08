@@ -33,6 +33,7 @@ type pinboardPayload struct {
 	tags        string
 	replace     string
 	shared      string
+	toread      string
 	auth_token  string
 }
 
@@ -278,6 +279,7 @@ func encodeURL(payload pinboardPayload, pathURL string) (req url.URL) {
 	q.Set("shared", payload.shared)
 	q.Set("tags", payload.tags)
 	q.Set("auth_token", payload.auth_token)
+	q.Set("toread", payload.toread)
 	u.RawQuery = q.Encode()
 	return u
 }

@@ -23,7 +23,7 @@ func postToCloud(args string, ga *Alfred.GoAlfred) (info []string, err error) {
 		return pinInfo, errors.New("Set your authorization token first!")
 	}
 	var payload pinboardPayload
-	payload.tags, payload.extended = parseTags(args)
+	payload.tags, payload.extended, payload.toread = parseTags(args)
 	payload.url = pinInfo[0]
 	payload.description = pinInfo[1]
 	payload.replace = "yes"

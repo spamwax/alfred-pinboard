@@ -155,12 +155,20 @@ func getTagsFor(q string, ga *Alfred.GoAlfred) (m sortedTags, err error) {
 	return m, nil
 }
 
-func parseTags(args string) (tags, desc string) {
+func parseTags(args string) (tags, desc string, toread string) {
 	foo_ := strings.Split(args, commentCharacter)
 	tags = strings.Trim(foo_[0], " ")
 	desc = ""
+	toread = "no"
 	if len(foo_) > 1 {
 		desc = strings.Trim(foo_[1], " ")
+		desc_words := strings.Split(desc, " ")
+		for _, word := range desc_words {
+			if word == "toread" {
+				toread = "yes"
+				break
+			}
+		}
 	}
-	return tags, desc
+	return tags, desc, toread
 }
