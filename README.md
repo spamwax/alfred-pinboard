@@ -1,3 +1,6 @@
+# The project is in maintanance mode. An improved/feature rich alternative is now being developed using Rust: [alfred-pinboard-rs](https://github.com/spamwax/alfred-pinboard-rs)
+Rust-based project is replacing this one. The new project works with Alfred 3's better and offers a range of new features such as tag suggestion, pin preview in Alfred, pin deletion, improved control over posting and better configuration option.
+
 # Alfred Workflow for Pinboard
 
 There are probably similar [Alfred](http://www.alfredapp.com/) Workflows out there but my main motivation for writing this was to learn the Go language.
